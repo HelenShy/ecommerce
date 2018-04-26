@@ -55,6 +55,10 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse("products:detail", kwargs={'slug': self.slug})
 
+    @property
+    def name(self):
+        return self.title
+
 
 @receiver(pre_save, sender=Product)
 def my_callback(sender, instance, *args, **kwargs):

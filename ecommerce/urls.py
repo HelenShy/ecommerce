@@ -30,6 +30,7 @@ urlpatterns = [
     path('contact/', contact_page, name='contact'),
     path('products/', include(('products.urls', 'products'))),
     path('search/', include(('search.urls', 'search'))),
+    path('carts/', include(('carts.urls', 'carts'))),
     # path('category/', include(('categories.urls', 'category'))),
 ]
 
