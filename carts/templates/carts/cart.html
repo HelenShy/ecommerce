@@ -28,6 +28,10 @@
           <th scope="row" colspan="2">Total cost</th>
           <td>{{cart.total}}</td>
         </tr>
+        <tr>
+          <th scope="row" colspan="2"></th>
+          <td><a class="btn btn-success" href="{% url "carts:checkout" %}">Checkout<a></td>
+        </tr>
       </tbody>
     </table>
   </div>

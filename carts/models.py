@@ -17,11 +17,13 @@ class CartManager(models.Manager):
                 cart_obj.user =  request.user
                 cart_obj.save( )
             print('Cart already exists')
+            new_obj = False
         else:
             print('Create new cart')
             cart_obj = Cart.objects.new(user=request.user)
             request.session['cart_id'] = cart_obj.id
-        return cart_obj
+            new_obj = True
+        return cart_obj, new_obj
 
     def new(self, user=None):
         if user is not None:

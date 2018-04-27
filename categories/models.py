@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.db.models import Q
 
 from products.models import Product
-from products.utils import unique_slug_generator
+from ecommerce.utils import unique_slug_generator
 
 
 class Category(models.Model):
