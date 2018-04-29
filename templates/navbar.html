@@ -26,7 +26,7 @@
       <li class="nav-item {% if request.path == cart_url %}active{% endif %}">
         <a class="nav-link" href="{% url 'carts:cart' %}">
           <i class="fas fa-shopping-cart"></i>
-          <span class="badge badge-success">{{request.session.cart_items}}</span>
+          <span class="badge badge-success navbar-cart-counter">{{request.session.cart_items}}</span>
         </a>
       </li>
       {% if request.user.is_authenticated %}

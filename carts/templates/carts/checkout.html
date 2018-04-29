@@ -1,6 +1,20 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% if billing %}
 <h1>Checkout</h1>
 <p>Order total: {{order.total}}</p>
+<form method="POST" action=".">{% csrf_token %}
+  <button type="submit" class="btn btn-default">Checkout</input>
+</form>
+{% else %}
+<div>
+  <p>Login</p>
+  {% include "accounts/snippets/login-form.html" with form=login_form next_url=request.build_absolute_uri  %}
+</div>
+<div>
+  <p>Continue as a guest</p>
+    {% include "accounts/snippets/guest-form.html" with form=guest_form next_url=request.build_absolute_uri  %}
+</div>
+{% endif %}
 {% endblock %}

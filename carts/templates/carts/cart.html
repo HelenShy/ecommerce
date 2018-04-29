@@ -13,20 +13,20 @@
           <th scope="col">Cost</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody class="cart-body">
         {% for product in cart.products.all %}
-        <tr>
+        <tr class="cart-product-rows">
           <th scope="row">{{forloop.counter}}</th>
           <td>
             <a href="{{product.get_absolute_url}}">{{product.name}}</a>
-            {% include "products/snippets/cartupdate-form.html" with cart=cart product=product %}
+            {% include "products/snippets/product_remove_from_cart-form.html" with product_id=product.id %}
           </td>
           <td>{{product.price}}</td>
         </tr>
         {% endfor %}
         <tr>
           <th scope="row" colspan="2">Total cost</th>
-          <td>{{cart.total}}</td>
+          <td class="cart-total">{{cart.total}}</td>
         </tr>
         <tr>
           <th scope="row" colspan="2"></th>
@@ -35,4 +35,9 @@
       </tbody>
     </table>
   </div>
+
+
+<div class="cart-item-remove-form" style="display:none">
+{% include "products/snippets/product_remove_from_cart-form.html" with product_id=product.id %}
+</div>
 {% endblock %}

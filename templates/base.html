@@ -21,8 +21,87 @@
 
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+  <script>
+    $(document).ready(function(){
+    var productForm = $(".form-product-ajax")
+    productForm.submit(function(event){
+        console.log("form submit")
+      event.preventDefault();
+      var thisForm = $(this)
+      var method = thisForm.attr("method")
+      var url = thisForm.attr("action")
+      var formData = thisForm.serialize()
+      $.ajax({
+        url: url,
+        method: method,
+        data: formData,
+        success: function(formData){
+          var productAction = thisForm.find(".product-action")
+          if (formData.added){
+            console.log("added")
+            productAction.html(
+              "<button type='submit' class='btn btn-link' style='padding:0px'>Remove</button>")
+          } else{
+            console.log("removed")
+              productAction.html(
+                "<button type='submit' class='btn btn-success'>Add to cart!</button>")
+          }
+          cartCounter = $(".navbar-cart-counter")
+          console.log(cartCounter)
+          cartCounter.text(formData.cart_count)
+
+          var currentPath = window.location.href
+          if (currentPath.indexOf('cart') !== -1){
+            updateCart()
+          }
+        },
+        error: function(error){
+          console.log("error")
+          console.log(error)
+        },
+      })
+    })
+
+    function updateCart(){
+        var method = "GET";
+        //var url = thisForm.attr("action");
+        var cartBody = $(".cart-body")
+        var cartBody = $(".cart-body")
+        var cartProductRows = cartBody.find(".cart-product-rows")
+        // var formData = thisForm.serialize();
+        var cartItemRemoveForm= $(".cart-item-remove-form")
+        var data = {}
+        $.ajax({
+          url: '/cart/api-cart',
+          method: "GET",
+          data: data,
+          success: function(data){
+            cartProductRows.html('')
+            i = data.products.length
+            console.log(data.products)
+            $.each(data.products, function(index, value){
+              var newCartItemRemoveForm = cartItemRemoveForm.clone()
+              newCartItemRemoveForm.css('display', 'block')
+              newCartItemRemoveForm.find(".product_id").val(value.id)
+              cartBody.prepend(
+                "<tr><th scope='row'>" + i + "</th><td><a href='" + value.url +
+                "'>" + value.name + "</a>" + newCartItemRemoveForm.html() +
+                "</td><td>" + value.price + "</td></tr>");
+              i--;
+            })
+            cartBody.find(".cart-total").text(data.total)
+          },
+          error:  function(error){
+            console.log('error')
+            console.log(error)
+          }
+        })
+      }
+    })
+
+  </script>
 </body>
 </html>

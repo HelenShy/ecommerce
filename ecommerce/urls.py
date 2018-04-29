@@ -15,23 +15,26 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.contrib.auth.views import LogoutView
 from django.contrib import admin
 from django.urls import path, include
 
-from accounts.views import login_page, register_page, logout_page
+from accounts.views import (LoginView,
+                            RegisterView,
+                            guest_register_page)
 from .views import home_page, contact_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home/', home_page, name='home'),
-    path('login/', login_page, name='login'),
-    path('logout/', logout_page, name='logout'),
-    path('register/', register_page, name='register'),
+    path('', home_page, name='home'),
+    path('login/', LoginView.as_view(), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('guest/', guest_register_page, name='guest_register'),
     path('contact/', contact_page, name='contact'),
     path('products/', include(('products.urls', 'products'))),
     path('search/', include(('search.urls', 'search'))),
-    path('carts/', include(('carts.urls', 'carts'))),
+    path('cart/', include(('carts.urls', 'carts'))),
     # path('category/', include(('categories.urls', 'category'))),
 ]
 
