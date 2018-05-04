@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="col-10 col-md-6 mx-auto">
+
+<h3>Add card</h3>
+<form action="/charge" method="post" class="payment-form" id="payment-form" data_token="{{ stripe_publish_key }}"
+data-next-url="{% if next %} {{ next }} {% endif %}">
+  <div class="form-row">
+    <div id="card-element" class="form-control">
+      <!-- A Stripe Element will be inserted here. -->
+    </div>
+
+    <!-- Used to display form errors. -->
+    <div id="card-errors" role="alert"></div>
+  </div>
+
+  <button class="btn btn-primary my-3" type="submit">Submit credit card</button>
+</form>
+</div>
+{% endblock %}

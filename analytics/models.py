@@ -28,8 +28,12 @@ class ObjectViewed(models.Model):
 
 def object_viewed_receiver(sender, instance, request, *args, **kwargs):
     obj_cls = ContentType.objects.get_for_model(sender)
+    if request.user.is_authenticated:
+        user_requested = request.user
+    else:
+        user_requested = None
     new_view_obj = ObjectViewed(
-        user = request.user,
+        user = user_requested,
         ip_address = get_user_ip(request),
         content_type = obj_cls,
         object_id = instance.id

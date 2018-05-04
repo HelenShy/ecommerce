@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/2.0/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 
 # Quick-start development settings - unsuitable for production
@@ -26,6 +26,14 @@ SECRET_KEY = '1p2yqdnd&uj(0v5!#=)+dylbzy-vi2j+3gx2ziqb13en9p6-e^'
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+EMAIL_HOST      = 'smtp.gmail.com'
+EMAIL_HOST_PASSWORD = 'skorost123'
+EMAIL_HOST_USER = 'mls.housestage@gmail.com'
+EMAIL_PORT      = 587
+EMAIL_USE_TLS   = True
+EMAIL_USE_SSL = False
+DEFAULT_FROM_EMAIL  = 'BookLibrary <mls.housestage@gmail.com>'
 
 
 # Application definition
@@ -47,9 +55,18 @@ INSTALLED_APPS = [
     'orders',
     'billing',
     'analytics',
+    'contact',
 ]
 
 AUTH_USER_MODEL = 'accounts.User'
+
+LOGIN_URL = '/login/'
+LOGIN_URL_REDIRECT = '/'
+LOGOUT_URL = '/logout/'
+
+
+STRIPE_SECRET_KEY = 'sk_test_tKYCBEWQCz0jmZBg3aSTKqH0'
+STRIPE_PUB_KEY = 'pk_test_716TWW4EdvbZe504AYXZY361'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -139,3 +156,14 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_cdn', 'static_root
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_cdn', 'media_root')
+
+
+CORS_REPLACE_HTTPS_REFERER      = False
+HOST_SCHEME                     = "http://"
+SECURE_PROXY_SSL_HEADER         = None
+SECURE_SSL_REDIRECT             = False
+SESSION_COOKIE_SECURE           = False
+CSRF_COOKIE_SECURE              = False
+SECURE_HSTS_SECONDS             = None
+SECURE_HSTS_INCLUDE_SUBDOMAINS  = False
+SECURE_FRAME_DENY               = False

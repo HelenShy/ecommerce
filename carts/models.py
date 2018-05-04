@@ -56,8 +56,3 @@ def products_changed(sender, instance, action, **kwargs):
 
 
 m2m_changed.connect(products_changed, sender=Cart.products.through)
-
-# @receiver(pre_save, sender=Cart)
-# def my_callback(sender, instance, *args, **kwargs):
-#     if not instance.slug:
-#         instance.slug = unique_slug_generator(instance)

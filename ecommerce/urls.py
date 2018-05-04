@@ -15,26 +15,31 @@ Including another URLconf
 """
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth.views import LogoutView
 from django.contrib import admin
 from django.urls import path, include
-
+from django.views.generic.base import RedirectView
 from accounts.views import (LoginView,
                             RegisterView,
-                            guest_register_page)
-from .views import home_page, contact_page
+                            guest_register_view,
+                            logout_view)
+from .views import home_page
+from contact.views import contact_page
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_page, name='home'),
     path('login/', LoginView.as_view(), name='login'),
-    path('logout/', LogoutView.as_view(), name='logout'),
+    path('logout/', logout_view, name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
-    path('guest/', guest_register_page, name='guest_register'),
+    path('guest/', guest_register_view, name='guest_register'),
     path('contact/', contact_page, name='contact'),
+    path('account/', include(('accounts.urls', 'account'))),
+    path('settings/', RedirectView.as_view(url='/account')),
     path('products/', include(('products.urls', 'products'))),
     path('search/', include(('search.urls', 'search'))),
     path('cart/', include(('carts.urls', 'carts'))),
+    path('billing/', include(('billing.urls', 'billing'))),
+    path('accounts/', include('accounts.password.urls')),
     # path('category/', include(('categories.urls', 'category'))),
 ]
 

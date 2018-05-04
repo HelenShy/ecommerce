@@ -44,12 +44,12 @@ class Order(models.Model):
         self.save()
         return self.total
 
+    def is_prepared(self):
+        return self.active and self.billing_profile and self.total > 0
+
     def set_status_paid(self):
-        if self.active and self.billing_profile and self.total > 0:
-            self.status = 'paid'
-            return True
-        else:
-            return False
+        self.status = 'paid'
+
 
 
 def pre_save_create_order_id(sender, instance, *args, **kwargs):

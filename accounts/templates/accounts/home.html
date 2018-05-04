@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+{{ request.user }}
+
+<div class="row">
+  <div class="col-12">
+    <h1>Account</h1>
+    </hr>
+  </div>
+    <div class="card col-12 col-md-3 my-3">
+      <div class="card-body">
+        <h5 class="card-title">User settings</h5>
+          <div class="list-group">
+            <a class="list-group-item" href="">Name</a>
+            <a class="list-group-item" href="">Email</a>
+            <a class="list-group-item" href="">Password reset</a>
+          </div>
+      </div>
+    </div>
+
+    <div class="card col-12 col-md-3 my-3">
+      <div class="card-body">
+        <h5 class="card-title">Billing</h5>
+        <div class="list-group">
+          <a class="list-group-item" href="">Adresses</a>
+          <a class="list-group-item" href="{% url="billing:payment" %}">Payment method</a>
+          <a class="list-group-item" href="">Orders</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card col-12 col-md-3 my-3">
+      <div class="card-body">
+        <h5 class="card-title">History</h5>
+        <div class="list-group">
+          <a class="list-group-item" href=""> Products viewed</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

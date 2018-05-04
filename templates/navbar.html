@@ -4,7 +4,9 @@
 {% url 'login' as login_url %}
 {% url 'register' as register_url %}
 {% url 'logout' as logout_url %}
-{% url 'cart' as cart_url %}
+{% url 'carts:cart' as cart_url %}
+{% url 'account:home' as account_home_url %}
+
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
   <a class="navbar-brand" href="{% url 'home' %}">BookLibrary</a>
@@ -15,30 +17,41 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item {% if request.path == home_url %} active {% endif %}">
-        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{{ home_url }}">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item {% if request.path == products_list_url %}active{% endif %}">
-        <a class="nav-link" href="{% url 'products:list' %}">Products</a>
+        <a class="nav-link" href="{ products_list_url }}">Products</a>
       </li>
       <li class="nav-item {% if request.path == contact_url %}active{% endif %}">
-        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+        <a class="nav-link" href="{{ contact_url }}">Contact</a>
       </li>
       <li class="nav-item {% if request.path == cart_url %}active{% endif %}">
-        <a class="nav-link" href="{% url 'carts:cart' %}">
+        <a class="nav-link" href="{{ cart_url }}">
           <i class="fas fa-shopping-cart"></i>
           <span class="badge badge-success navbar-cart-counter">{{request.session.cart_items}}</span>
         </a>
       </li>
       {% if request.user.is_authenticated %}
-      <li class="nav-item {% if request.path == logout_url %}active{% endif %}">
-        <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+      <li class="nav-item dropdown {% if request.path == account_home_url %}active{% endif %}">
+        <a class="nav-link dropdown-toggle" href="{{ account_home_url }}" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          {{ request.user }}
+        </a>
+
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/account">Home</a>
+          <a class="dropdown-item" href="#">User settings</a>
+          <a class="dropdown-item" href="#">Billing</a>
+          <a class="dropdown-item" href="#">History</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="{{ logout_url }}">Logout</a>
+        </div>
       </li>
       {% else %}
       <li class="nav-item {% if request.path == register_url %}active{% endif %}">
-        <a class="nav-link" href="{% url 'register' %}">Register</a>
+        <a class="nav-link" href="{{ register_url }}">Register</a>
       </li>
       <li class="nav-item {% if request.path == login_url %}active{% endif %}">
-        <a class="nav-link" href="{% url 'login' %}">Login</a>
+        <a class="nav-link" href="{{ login_url }}">Login</a>
       </li>
       {% endif %}
     </ul>

@@ -1,20 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
 {% if billing %}
-<h1>Checkout</h1>
-<p>Order total: {{order.total}}</p>
-<form method="POST" action=".">{% csrf_token %}
-  <button type="submit" class="btn btn-default">Checkout</input>
-</form>
+    <form method="POST" action=".">{% csrf_token %}
+      <h1>Checkout</h1>
+      {% if has_card %}
+      <p>Payment method:</p>
+        {% for card in billing.get_cards %}
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="payment-card" value="{{card.pk}}"
+            {% if card.pk == billing.default_card.pk %} checked {% endif %}>
+            <label class="form-check-label" for="exampleRadios1">
+              {{card}}
+            </label>
+          </div>
+        {% endfor %}
+      {% endif %}
+      <a href="{{ billing.get_payment_method }}?next={{request.build_absolute_uri}}">Add new card</a>
+      <p>Order total: {{ order.total }}</p>
+      <button type="submit" class="btn btn-default">Checkout</input>
+    </form>
 {% else %}
-<div>
-  <p>Login</p>
-  {% include "accounts/snippets/login-form.html" with form=login_form next_url=request.build_absolute_uri  %}
-</div>
-<div>
-  <p>Continue as a guest</p>
-    {% include "accounts/snippets/guest-form.html" with form=guest_form next_url=request.build_absolute_uri  %}
-</div>
+    <div>
+      <p>Login</p>
+      {% include "accounts/snippets/form.html" with form=login_form next_url=request.build_absolute_uri %}
+    </div>
+    <div>
+      <p>Continue as a guest</p>
+        {% url "guest_register" as guest_register_url %}
+        {% include "accounts/snippets/form.html" with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
+    </div>
 {% endif %}
+
 {% endblock %}

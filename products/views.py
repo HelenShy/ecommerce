@@ -11,7 +11,7 @@ class ProductListView(ListView):
 
 
 class ProductDetailSlugView(ObjectViewedMixin, DetailView):
-    model = Product
+    queryset = Product.objects.all()
     template_name = 'products/detail.html'
 
     def get_context_data(self, *args, **kwargs):
