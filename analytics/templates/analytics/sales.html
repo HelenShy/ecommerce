@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12">
+      <h1>Sales Data</h1>
+      <h5>Recent orders</h5>
+      <p>Total: {{last_orders_totals.total__sum}}</p>
+      <ol>
+        {% for order in last_orders %}
+          <li>
+            {{order.order_id}}
+            {{order.status}}
+            {{order.total}}
+            {{order.changed}}
+          </li>
+        {% endfor %}
+      </ol>
+        <h5>Recent paid orders</h5>
+          <p>Total: {{last_paid_orders_totals.total__sum}}</p>
+        <ol>
+        {% for order in last_paid_orders %}
+          <li>
+            {{order.order_id}}
+            {{order.total}}
+            {{order.changed}}
+          </li>
+        {% endfor %}
+      </ol>
+    </div>
+  </div>
+{% endblock %}

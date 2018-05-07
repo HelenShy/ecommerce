@@ -28,9 +28,23 @@ def unique_slug_generator(instance, new_slug=None):
     return slug
 
 
+def unique_key_generator(instance):
+    """
+    Key generator
+    """
+    size = random.randint(30, 45)
+    key = random_string_generator(size)
+
+    Klass = instance.__class__
+    qs_exists = Klass.objects.filter(key=key).exists()
+    if qs_exists:
+        return unique_order_id_generator(instance)
+    return key
+
+
 def unique_order_id_generator(instance):
     """
-    Order id generator based
+    Order id generator
     """
     order_id = random_string_generator(size=10)
 

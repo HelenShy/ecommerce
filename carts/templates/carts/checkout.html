@@ -16,6 +16,8 @@
             </label>
           </div>
         {% endfor %}
+        {% else %}
+        Please add payment method using the link:
       {% endif %}
       <a href="{{ billing.get_payment_method }}?next={{request.build_absolute_uri}}">Add new card</a>
       <p>Order total: {{ order.total }}</p>

@@ -12,9 +12,8 @@
       <div class="card-body">
         <h5 class="card-title">User settings</h5>
           <div class="list-group">
-            <a class="list-group-item" href="">Name</a>
-            <a class="list-group-item" href="">Email</a>
-            <a class="list-group-item" href="">Password reset</a>
+            <a class="list-group-item" href="{% url 'account:update_details' %}">Profile settings</a>
+            <a class="list-group-item" href="{% url 'accounts:password_change' %}">Password change</a>
           </div>
       </div>
     </div>
@@ -23,9 +22,8 @@
       <div class="card-body">
         <h5 class="card-title">Billing</h5>
         <div class="list-group">
-          <a class="list-group-item" href="">Adresses</a>
-          <a class="list-group-item" href="{% url="billing:payment" %}">Payment method</a>
-          <a class="list-group-item" href="">Orders</a>
+          <a class="list-group-item" href="{% url "billing:payment" %}">Payment method</a>
+          <a class="list-group-item" href="{% url 'orders:list' %}">Orders</a>
         </div>
       </div>
     </div>
@@ -34,7 +32,7 @@
       <div class="card-body">
         <h5 class="card-title">History</h5>
         <div class="list-group">
-          <a class="list-group-item" href=""> Products viewed</a>
+          <a class="list-group-item" href="{% url 'products_history' %}"> Products viewed</a>
         </div>
       </div>
     </div>

@@ -35,6 +35,8 @@ EMAIL_USE_TLS   = True
 EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL  = 'BookLibrary <mls.housestage@gmail.com>'
 
+BASE_URL = "127.0.0.1:8000"
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -132,7 +134,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Kiev'
 
 USE_I18N = True
 

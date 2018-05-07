@@ -54,8 +54,8 @@ def checkout_page(request):
     if cart_created or cart_obj.products.count() == 0:
         return redirect('carts:cart')
     billing_obj, billing_created = BillingProfile.objects.new_or_get(request)
-    login_form = LoginForm()
-    guest_form = GuestForm()
+    login_form = LoginForm(request)
+    guest_form = GuestForm(request)
     has_card = False
     if billing_obj:
         order_obj, order_created = Order.objects.new_or_get(
@@ -64,12 +64,14 @@ def checkout_page(request):
         has_card = billing_obj.has_card
     if request.method == 'POST':
         if order_obj.is_prepared():
+            print('is_prepared')
             card_id = request.POST.get("payment-card", None)
+            card = None
             if card_id:
                 card = billing_obj.card_set.filter(pk=card_id).first()
-            print(card)
             charge_paid, charge_msg = billing_obj.charge(order_obj, card)
             if charge_paid:
+                print('is_paid')
                 order_obj.set_status_paid()
                 request.session['cart_items'] = 0
                 del request.session['cart_id']

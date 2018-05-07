@@ -20,10 +20,12 @@ from django.urls import path, include
 from django.views.generic.base import RedirectView
 from accounts.views import (LoginView,
                             RegisterView,
-                            guest_register_view,
+                            GuestRegisterView,
                             logout_view)
+from analytics.views import ProductsHistoryView, SalesView
 from .views import home_page
 from contact.views import contact_page
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,7 +33,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', logout_view, name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
-    path('guest/', guest_register_view, name='guest_register'),
+    path('guest/', GuestRegisterView.as_view(), name='guest_register'),
     path('contact/', contact_page, name='contact'),
     path('account/', include(('accounts.urls', 'account'))),
     path('settings/', RedirectView.as_view(url='/account')),
@@ -39,7 +41,10 @@ urlpatterns = [
     path('search/', include(('search.urls', 'search'))),
     path('cart/', include(('carts.urls', 'carts'))),
     path('billing/', include(('billing.urls', 'billing'))),
-    path('accounts/', include('accounts.password.urls')),
+    path('accounts/', include(('accounts.password.urls', 'accounts'))),
+    path('history/products/', ProductsHistoryView.as_view(), name='products_history'),
+    path('orders/', include(('orders.urls', 'orders'))),
+    path('analytics/sales/', SalesView.as_view(), name='sales_analytics'),
     # path('category/', include(('categories.urls', 'category'))),
 ]
 

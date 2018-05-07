@@ -35,6 +35,8 @@ EMAIL_USE_TLS   = True
 EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL  = 'BookLibrary <mls.housestage@gmail.com>'
 
+BASE_URL = "127.0.0.1:8000"
+
 # Application definition
 
 INSTALLED_APPS = [
