@@ -22,7 +22,7 @@ from accounts.views import (LoginView,
                             RegisterView,
                             GuestRegisterView,
                             logout_view)
-from analytics.views import ProductsHistoryView, SalesView
+from analytics.views import ProductsHistoryView, SalesView, SalesAjaxView
 from .views import home_page
 from contact.views import contact_page
 
@@ -45,6 +45,7 @@ urlpatterns = [
     path('history/products/', ProductsHistoryView.as_view(), name='products_history'),
     path('orders/', include(('orders.urls', 'orders'))),
     path('analytics/sales/', SalesView.as_view(), name='sales_analytics'),
+    path('analytics/sales/data/', SalesAjaxView.as_view(), name='sales_analytics_ajax'),
     # path('category/', include(('categories.urls', 'category'))),
 ]
 

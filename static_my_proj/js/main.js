@@ -14,11 +14,9 @@ productForm.submit(function(event){
     success: function(formData){
       var productAction = thisForm.find(".product-action")
       if (formData.added){
-        console.log("added")
         productAction.html(
           "<button type='submit' class='btn btn-link' style='padding:0px'>Remove</button>")
       } else{
-        console.log("removed")
           productAction.html(
             "<button type='submit' class='btn btn-success'>Add to cart!</button>")
       }

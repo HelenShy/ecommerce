@@ -2,6 +2,9 @@ from django.db import models
 from django.db.models.signals import pre_save, post_save
 from django.urls import reverse
 from django.db.models import Sum, Avg, Count
+from django.utils import timezone
+from django.db.models.functions import Coalesce
+import datetime
 
 from carts.models import Cart
 from billing.models import BillingProfile
@@ -22,20 +25,75 @@ class OrderQuerySet(models.query.QuerySet):
         return self.exclude(status='created')
 
     def totals_data(self):
-        return self.aggregate(Sum('total'),
-                              Avg('total'))
+        return self.aggregate(total__sum=Coalesce(Sum('total'), 0),
+                              total__avg=Coalesce(Avg('total'), 0))
 
     def totals_cart_data(self):
-        return self.aggregate(Sum('cart__products__price'),
-                              Avg('cart__products__price'),
-                              Count('cart__products'))
+        return self.aggregate(total__sum=Coalesce(Sum('cart__products__price'), 0),
+                              total__avg=Coalesce(Avg('cart__products__price'), 0),
+                              total__count=Coalesce(Count('cart__products'), 0))
+
+    def get_sales_breakdown(self):
+        recent_orders = self.all()
+        recent_orders_totals = recent_orders.totals_data()
+        recent_orders_cart_data = recent_orders.totals_cart_data()
+        recent_paid_orders = recent_orders.filter(status='paid')
+        recent_paid_orders_totals = recent_orders.filter(
+            status='paid').totals_data()
+        data = {
+            'recent_orders': recent_orders,
+            'recent_orders_totals': recent_orders_totals,
+            'recent_orders_cart_data': recent_orders_cart_data,
+            'recent_paid_orders': recent_paid_orders,
+            'recent_paid_orders_totals': recent_paid_orders_totals
+            }
+        return data
 
     def by_time_range(self, start_date, end_date=None):
         if end_date:
-            return self.filter(created__gte=start_date)
-        return self.filter(created__gte=start_date).filter(
-            created__lte=end_date
-        )
+            return self.filter(created__gte=start_date).filter(
+                created__lte=end_date
+            )
+        return self.filter(created__gte=start_date)
+
+    def by_week_range(self, qty_weeks_back, qty_weeks=None):
+        now  = timezone.now()
+        start_date_days = qty_weeks_back * 7
+        start_date = now -  datetime.timedelta(
+            days=start_date_days)
+        if not qty_weeks:
+            return self.by_time_range(start_date)
+        end_date_days = qty_weeks * 7
+        end_date = now - datetime.timedelta(
+            days=end_date_days)
+        return self.by_time_range(start_date, end_date)
+
+    def by_month(self):
+        now  = timezone.now()
+        start_month = datetime.datetime(now.year, now.month, 1)
+        return self.by_time_range(start_month)
+
+    def period_totals(self, type, qty_periods_ago):
+        labels = []
+        totals = []
+        days_coef_dict = {
+            'day': 1,
+            'week': 7,
+            'month': 30}
+        days_coef = days_coef_dict.get(type, 1)
+        start_date = timezone.now() - datetime.timedelta(
+            days=days_coef * (qty_periods_ago -1))
+        for period in range(0, qty_periods_ago):
+            new_date = start_date + datetime.timedelta(days=period*days_coef)
+            if  type == 'day':
+                labels.append(new_date.strftime("%a"))
+            else:
+                labels.append(new_date.strftime("%d %b"))
+            qs = self.by_time_range(new_date, new_date + datetime.timedelta(days_coef))
+            period_totals = qs.get_sales_breakdown()['recent_paid_orders_totals']['total__sum']
+            totals.append(period_totals)
+        return labels, totals
+
 
 
 class OrderManager(models.Manager):

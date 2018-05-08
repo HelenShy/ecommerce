@@ -1,32 +1,65 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<h1 class="my-5">Sales data</h1>
+<hr/>
   <div class="row">
-    <div class="col-12">
-      <h1>Sales Data</h1>
-      <h5>Recent orders</h5>
-      <p>Total: {{last_orders_totals.total__sum}}</p>
-      <ol>
-        {% for order in last_orders %}
-          <li>
-            {{order.order_id}}
-            {{order.status}}
-            {{order.total}}
-            {{order.changed}}
-          </li>
-        {% endfor %}
-      </ol>
-        <h5>Recent paid orders</h5>
-          <p>Total: {{last_paid_orders_totals.total__sum}}</p>
+    <div class="col-6">
+      <h5>Today sales data</h5>
+        <p>Total sales: {{today.recent_paid_orders_totals.total__sum}}</p>
         <ol>
-        {% for order in last_paid_orders %}
+        {% for order in today.recent_paid_orders|slice:":5" %}
           <li>
             {{order.order_id}}
             {{order.total}}
             {{order.changed}}
           </li>
+        {% empty %}
+        Nothing was sold yet.
         {% endfor %}
       </ol>
+
+      <h5>Week sales data</h5>
+        <p>Total sales: {{week.recent_paid_orders_totals.total__sum}}</p>
+        <ol>
+        {% for order in week.recent_paid_orders|slice:":5" %}
+          <li>
+            {{order.order_id}}
+            {{order.total}}
+            {{order.changed}}
+          </li>
+        {% empty %}
+        Nothing was sold yet.
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div class="col-6">
+      <canvas class='render-chart' id="weekSales" width="400" height="400" data-type='week'></canvas>
+    </div>
+  </div>
+
+<hr/>
+
+  <div class="row">
+    <div class="col-6">
+      <h5>Recent 4 weeks sales data</h5>
+        <p>Total sales: {{4weeks.recent_paid_orders_totals.total__sum}}</p>
+        <ol>
+        {% for order in 4weeks.recent_paid_orders|slice:":5" %}
+          <li>
+            {{order.order_id}}
+            {{order.total}}
+            {{order.changed}}
+          </li>
+        {% empty %}
+        Nothing was sold yet.
+        {% endfor %}
+      </ol>
+    </div>
+
+    <div class="col-6">
+      <canvas class='render-chart' id="4weekSales" width="400" height="400" data-type='4weeks'></canvas>
     </div>
   </div>
 {% endblock %}

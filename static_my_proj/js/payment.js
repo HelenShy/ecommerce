@@ -79,7 +79,7 @@ function stripeTokenHandler(token) {
       card.clear()
       console.log(data.message || 'success')
       sessionStorage.setItem('message', data.message || 'SUCCESS');
-      sessionStorage.setItem('level', data.message || 'SUCCESS');
+      sessionStorage.setItem('level', 'SUCCESS');
       if (nextUrl) {
         window.location.href = nextUrl;
       }
@@ -89,7 +89,7 @@ function stripeTokenHandler(token) {
     },
     error:  function(error){
       sessionStorage.setItem('message', data.message || 'ERROR');
-      sessionStorage.setItem('level', data.message || 'ERROR');
+      sessionStorage.setItem('level', 'ERROR');
       window.location.reload();
     }
   })

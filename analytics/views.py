@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView, TemplateView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
-from datetime import datetime
+import datetime
+from django.http import JsonResponse
 
 from carts.models import Cart
 from products.models import Product
@@ -36,11 +37,23 @@ class SalesView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, *args, **kwargs):
         now = timezone.now()
         context = super(SalesView, self).get_context_data(*args, **kwargs)
-        orders = Order.objects.all()
-        context['last_orders'] = orders
-        context['last_orders_totals'] = orders.totals_data()
-        context['last_orders_cart_data'] = orders.totals_cart_data()
-        context['last_paid_orders'] = orders.filter(status='paid')
-        context['last_paid_orders_totals'] = orders.filter(
-            status='paid').totals_data()
+        qs = Order.objects.all()
+        context['today'] = qs.by_time_range(now).get_sales_breakdown()
+        context['week'] = qs.by_week_range(1).get_sales_breakdown()
+        context['4weeks'] = qs.by_week_range(4).get_sales_breakdown()
+        context['current_month'] = qs.by_month().get_sales_breakdown()
         return context
+
+
+class SalesAjaxView(View):
+    def get(self, request, *args, **kwargs):
+        if self.request.user.is_staff:
+            data = {}
+            qs = Order.objects.all()
+            if self.request.GET.get('type') == 'week':
+                labels, totals = qs.period_totals('day', 7)
+            if self.request.GET.get('type') == '4weeks':
+                labels, totals = qs.period_totals('week', 4)
+            data['labels'] = labels
+            data['data'] = totals
+        return JsonResponse(data)
