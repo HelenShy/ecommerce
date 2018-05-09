@@ -3,7 +3,7 @@ from django.views.generic  import ListView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import Http404
 
-from .models import Order
+from .models import Order, ProductPurchase
 
 
 class OrderListView(LoginRequiredMixin, ListView):
@@ -26,3 +26,13 @@ class OrderDetailView(LoginRequiredMixin, DetailView):
             return qs.first()
         else:
             return Http404
+
+
+class PurchaseListView(LoginRequiredMixin, ListView):
+    template_name = 'orders/purchase-list.html'
+
+    def get_queryset(self):
+        qs = ProductPurchase.objects.products_by_request(self.request)
+        for o in qs:
+            print(o)
+        return qs

@@ -10,10 +10,11 @@
   </div>
     <div class="card col-12 col-md-3 my-3">
       <div class="card-body">
-        <h5 class="card-title">User settings</h5>
+        <h5 class="card-title">Account settings</h5>
           <div class="list-group">
             <a class="list-group-item" href="{% url 'account:update_details' %}">Profile settings</a>
             <a class="list-group-item" href="{% url 'accounts:password_change' %}">Password change</a>
+            <a class="list-group-item" href="{% url 'purchases' %}">Purchases</a>
           </div>
       </div>
     </div>

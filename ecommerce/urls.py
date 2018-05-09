@@ -25,6 +25,7 @@ from accounts.views import (LoginView,
 from analytics.views import ProductsHistoryView, SalesView, SalesAjaxView
 from .views import home_page
 from contact.views import contact_page
+from orders.views import PurchaseListView
 
 
 urlpatterns = [
@@ -46,6 +47,7 @@ urlpatterns = [
     path('orders/', include(('orders.urls', 'orders'))),
     path('analytics/sales/', SalesView.as_view(), name='sales_analytics'),
     path('analytics/sales/data/', SalesAjaxView.as_view(), name='sales_analytics_ajax'),
+    path('purchases/', PurchaseListView.as_view(), name='purchases'),
     # path('category/', include(('categories.urls', 'category'))),
 ]
 

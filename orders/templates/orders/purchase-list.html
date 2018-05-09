@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class='container'>
+    <h1>Purchases</h1>
+    <div class='row'>
+      <table class='table col-lg-10 col-md-12'>
+        <thead>
+          <th>Product</th>
+
+          <th>Download</th>
+        </thead>
+      {% for obj in object_list %}
+        <tr>
+          <td><a href="{{obj.product.get_absolute_url}}">{{obj.title}}</a></td>
+          <td>
+            {% for obj in obj.get_downloads %}
+            <a href="{{ obj.get_download_url }}">{{ obj.name }}</a>
+            {% endfor %}
+          </td>
+
+        </tr>
+      {% empty %}
+      <tr>
+        <td colspan='3'>No purchases yet.</td>
+      </tr>
+      {% endfor %}
+      </table>
+    </div>
+  </div>
+{% endblock %}

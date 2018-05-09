@@ -1,7 +1,10 @@
 import random
 import string
-
+import os
 from django.utils.text import slugify
+
+def get_filename(path):
+    return os.path.basename(path)
 
 
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):

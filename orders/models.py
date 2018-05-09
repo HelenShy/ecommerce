@@ -4,10 +4,12 @@ from django.urls import reverse
 from django.db.models import Sum, Avg, Count
 from django.utils import timezone
 from django.db.models.functions import Coalesce
+from django.conf import settings
 import datetime
 
 from carts.models import Cart
 from billing.models import BillingProfile
+from products.models import Product
 from ecommerce.utils import unique_order_id_generator
 
 ORDER_STATUS_CHOICES = {
@@ -142,9 +144,22 @@ class Order(models.Model):
     def is_prepared(self):
         return self.active and self.billing_profile and self.total > 0
 
+    def create_purchases(self):
+        for p in self.cart.products.all():
+            ProductPurchase.objects.get_or_create(
+                order_id=self.order_id,
+                billing_profile=self.billing_profile,
+                product=p
+            )
+        return ProductPurchase.objects.filter(order_id=self.order_id).count()
+
     def set_status_paid(self):
-        self.status = 'paid'
-        self.save()
+        if self.status != 'paid':
+            if self.is_prepared():
+                self.status = 'paid'
+                self.save()
+                self.create_purchases()
+        return self.status
 
     def get_absolute_url(self):
         return reverse("orders:detail", kwargs={'order_id': self.order_id})
@@ -180,3 +195,38 @@ def post_save_update_order(sender, instance, created, *args, **kwargs):
             order.update_total()
 
 post_save.connect(post_save_update_order, sender=Cart)
+
+
+class ProductPurchaseQuerySet(models.query.QuerySet):
+    def by_billing_profile(self, request):
+        billing_profile, created = BillingProfile.objects.new_or_get(request)
+        qs = self.filter(billing_profile=billing_profile)
+        return qs
+
+
+class ProductPurchaseManager(models.Manager):
+    def get_queryset(self):
+        return OrderQuerySet(self.model, using=self._db)
+
+    def by_billing_profile(self, request):
+        return self.get_queryset().by_billing_profile(request)
+
+    def products_by_request(self, request):
+        qs = self.by_billing_profile(request)
+        product_ids = [x.product.id for x in qs]
+        products = Product.objects.filter(id__in=product_ids).distinct()
+        return products
+
+
+class ProductPurchase(models.Model):
+    order_id = models.CharField(max_length=40)
+    billing_profile = models.ForeignKey(BillingProfile,
+                                        on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    created = models.DateTimeField(auto_now_add=True)
+    changed = models.DateTimeField(auto_now=True)
+
+    objects = ProductPurchaseManager()
+
+    def __str__(self):
+        return self.product.title

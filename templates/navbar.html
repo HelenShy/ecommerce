@@ -39,9 +39,10 @@
 
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="/account">Home</a>
-          <a class="dropdown-item" href="#">User settings</a>
-          <a class="dropdown-item" href="#">Billing</a>
-          <a class="dropdown-item" href="#">History</a>
+          <a class="dropdown-item" href="{% url 'account:update_details' %}">User settings</a>
+          <a class="dropdown-item" href="{% url 'orders:list' %}">Billing</a>
+          <a class="dropdown-item" href="{% url 'products_history' %}">History</a>
+          <a class="dropdown-item" href="{% url 'purchases' %}">Purchases</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="{{ logout_url }}">Logout</a>
         </div>
