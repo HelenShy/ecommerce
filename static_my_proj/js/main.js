@@ -1,7 +1,27 @@
 $(document).ready(function(){
 var productForm = $(".form-product-ajax")
+
+function productIsPurchased(productId){
+  if (productId == 1){
+    return true
+  } else {
+    return false
+  }
+}
+
+$.each(productForm, function(index, value){
+  $this = $(this)
+  var productAction = $this.find(".product-action")
+  var productInput = $this.find("[name='product_id']")
+  var productId = productInput.attr("value")
+  var isPurchasedBefore = productIsPurchased(productId)
+  if (isPurchasedBefore) {
+    productAction.html(
+      "<p>Already in <a  href='/purchases/'>purchased</a></p>")
+  }
+})
+
 productForm.submit(function(event){
-    console.log("form submit")
   event.preventDefault();
   var thisForm = $(this)
   var method = thisForm.attr("method")
@@ -15,13 +35,12 @@ productForm.submit(function(event){
       var productAction = thisForm.find(".product-action")
       if (formData.added){
         productAction.html(
-          "<button type='submit' class='btn btn-link' style='padding:0px'>Remove</button>")
+          "<a class='btn btn-link' href='/cart/'>In cart</a><button type='submit' class='btn btn-link mx-3' style='padding:0px'>Remove?</button>")
       } else{
           productAction.html(
-            "<button type='submit' class='btn btn-success'>Add to cart!</button>")
+            "<button type='submit' class='btn btn-success'>Add to cart</button>")
       }
       cartCounter = $(".navbar-cart-counter")
-      console.log(cartCounter)
       cartCounter.text(formData.cart_count)
 
       var currentPath = window.location.href

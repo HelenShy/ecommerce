@@ -2,7 +2,7 @@
   <input type="hidden" name="product_id" value="{{product.id}}"/>
     <div class="product-action">
       {% if product in cart.products.all %}
-      <button type="submit" class="btn btn-link" style="padding:0px">Remove</button>
+    <a class='btn btn-link' href="{% url 'carts:cart' %}">In cart</a><button type="submit" class="btn btn-link mx-3" style="padding:0px">Remove?</button>
       {% else %}
       <button type="submit" class="btn btn-success">Add to cart</button>
       {% endif %}

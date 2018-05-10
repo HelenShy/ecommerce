@@ -4,7 +4,7 @@ from django.contrib import messages
 
 from .models import Cart
 from products.models import Product
-from orders.models import Order
+from orders.models import Order, ProductPurchase
 from billing.models import BillingProfile
 from accounts.forms import LoginForm, GuestForm
 
@@ -21,6 +21,13 @@ def cart_update(request):
         if not product_obj:
             return Product.DoesNotExist
         cart_obj, cart_new  = Cart.objects.new_or_get(request=request)
+        already_purchased = ProductPurchase.objects.check_in_purchased(
+            request, product_obj)
+        print('already_purchased')
+        print(already_purchased)
+        if already_purchased:
+            messages.success(request, 'product was already purchased')
+            return redirect('purchases')
         if product_obj in cart_obj.products.all():
             cart_obj.products.remove(product_obj)
             removed = True
@@ -64,14 +71,12 @@ def checkout_page(request):
         has_card = billing_obj.has_card
     if request.method == 'POST':
         if order_obj.is_prepared():
-            print('is_prepared')
             card_id = request.POST.get("payment-card", None)
             card = None
             if card_id:
                 card = billing_obj.card_set.filter(pk=card_id).first()
             charge_paid, charge_msg = billing_obj.charge(order_obj, card)
             if charge_paid:
-                print('is_paid')
                 order_obj.set_status_paid()
                 request.session['cart_items'] = 0
                 del request.session['cart_id']

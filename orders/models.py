@@ -180,14 +180,12 @@ pre_save.connect(pre_save_create_order_id, sender=Order)
 
 def post_save_update_total(sender, instance, created, *args, **kwargs):
     if created:
-        print('if created')
         instance.update_total()
 
 post_save.connect(post_save_update_total, sender=Order)
 
 
 def post_save_update_order(sender, instance, created, *args, **kwargs):
-    print('post_save Cart')
     if not created:
         qs = Order.objects.filter(cart__id=instance.id)
         if qs.count() == 1:
@@ -216,6 +214,10 @@ class ProductPurchaseManager(models.Manager):
         product_ids = [x.product.id for x in qs]
         products = Product.objects.filter(id__in=product_ids).distinct()
         return products
+
+    def check_in_purchased(self, request, product):
+        qs_purchased = self.products_by_request(request)
+        return product in qs_purchased
 
 
 class ProductPurchase(models.Model):

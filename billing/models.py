@@ -15,6 +15,7 @@ class BillingManager(models.Manager):
     def new_or_get(self, request):
         user = request.user
         guest_id = request.session.get('guest_id')
+        print(guest_id)
         obj = None
         created = False
         if user.is_authenticated:
