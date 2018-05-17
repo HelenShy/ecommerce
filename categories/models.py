@@ -21,7 +21,10 @@ class Category(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("category:detail", kwargs={'slug': self.slug})
+        """
+        Returns category`s url.
+        """
+        return reverse("products:category", kwargs={'category': self.title})
 
     class Meta:
         verbose_name = "Category"
@@ -29,6 +32,25 @@ class Category(models.Model):
 
 
 @receiver(pre_save, sender=Category)
+def my_callback(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+
+class Collection(models.Model):
+    title = models.CharField(max_length=1200)
+    slug = models.SlugField(blank=True, unique=True)
+    active = models.BooleanField(default=True)
+    products = models.ManyToManyField(Product, blank=True)
+
+    created = models.DateTimeField(auto_now_add=True)
+    changed = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+
+@receiver(pre_save, sender=Collection)
 def my_callback(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)

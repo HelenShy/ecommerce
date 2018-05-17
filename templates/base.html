@@ -10,10 +10,13 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css" integrity="sha384-9gVQ4dYFwwWSjIDZnLEWnxCjeSWFphJiwGPXr1jddIhOegiu1FwO5qRGvFXOdJZ4" crossorigin="anonymous">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg" crossorigin="anonymous">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}" >
   <!-- Custom Stripe style -->
   <link rel="stylesheet" href="{% static 'css/payment.css' %}" >
   <!-- Custom flash messages style -->
   <link rel="stylesheet" href="{% static 'css/flash.css' %}" >
+  <!-- Slick Carousel style -->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
 
   <title></title>
 </head>
@@ -33,10 +36,12 @@
     {% endif %}
   </div>
 
-  <div class='container'>
+  <!-- <div class='container'> -->
+  <main>
     {% block content %}
     {% endblock %}
-  </div>
+  </main>
+  <!-- </div> -->
   <!-- Optional JavaScript -->
   <!-- jQuery first, then Popper.js, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -46,12 +51,18 @@
   <script src="https://js.stripe.com/v3/"></script>
   <!-- Chart JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
-
+  <!-- Slick Carousel JS-->
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   <!-- Custom JS -->
   <script src="{% static 'js/csrf.ajax.js' %}"></script>
   <script src="{% static 'js/main.js' %}"></script>
   <script src="{% static 'js/payment.js' %}"></script>
   <script src="{% static 'js/sales.js' %}"></script>
+
+  <footer>
+  <hr>
+  <p>© 2018 AllWorldBooks.com</p>
+  </footer>
 
 </body>
 </html>

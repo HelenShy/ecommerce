@@ -19,23 +19,39 @@ ORDER_STATUS_CHOICES = {
 
 class OrderQuerySet(models.query.QuerySet):
     def by_billing_profile(self, request):
+        """
+        Returns all orders for the billing profile in request.
+        """
         billing_profile, created = BillingProfile.objects.new_or_get(request)
         qs = self.filter(billing_profile=billing_profile)
         return qs
 
     def not_created(self):
+        """
+        Returns all orders except the ones with 'created' status.
+        """
         return self.exclude(status='created')
 
     def totals_data(self):
+        """
+        Returns tuple total and average value of products in order.
+        """
         return self.aggregate(total__sum=Coalesce(Sum('total'), 0),
                               total__avg=Coalesce(Avg('total'), 0))
 
     def totals_cart_data(self):
+        """
+        Returns tuple total, average value and total quantity of products
+        in order.
+        """
         return self.aggregate(total__sum=Coalesce(Sum('cart__products__price'), 0),
                               total__avg=Coalesce(Avg('cart__products__price'), 0),
                               total__count=Coalesce(Count('cart__products'), 0))
 
     def get_sales_breakdown(self):
+        """
+        Returns detailed statistics about orders.
+        """
         recent_orders = self.all()
         recent_orders_totals = recent_orders.totals_data()
         recent_orders_cart_data = recent_orders.totals_cart_data()
@@ -52,6 +68,10 @@ class OrderQuerySet(models.query.QuerySet):
         return data
 
     def by_time_range(self, start_date, end_date=None):
+        """
+        Returns orders creted in period between start_date and end_date.
+        If end_date is None then in period starting from start_date till now.
+        """
         if end_date:
             return self.filter(created__gte=start_date).filter(
                 created__lte=end_date
@@ -59,6 +79,11 @@ class OrderQuerySet(models.query.QuerySet):
         return self.filter(created__gte=start_date)
 
     def by_week_range(self, qty_weeks_back, qty_weeks=None):
+        """
+        Returns orders created in selected period defined by weeks.
+        :param qty_weeks_back: quantity of weeks ago to return data from.
+        :param qty_weeks: quantity of weeks on which data should be returned.
+        """
         now  = timezone.now()
         start_date_days = qty_weeks_back * 7
         start_date = now -  datetime.timedelta(
@@ -71,11 +96,21 @@ class OrderQuerySet(models.query.QuerySet):
         return self.by_time_range(start_date, end_date)
 
     def by_month(self):
+        """
+        Returns orders created in period of current month.
+        """
         now  = timezone.now()
         start_month = datetime.datetime(now.year, now.month, 1)
         return self.by_time_range(start_month)
 
     def period_totals(self, type, qty_periods_ago):
+        """
+        Returns totals for orders created starting from defined period of time
+        till now.
+        :param type: type of period:day, week, month.
+        :param qty_periods_ago: quantity of periods (of selected type) data
+        should be returned starting from.
+        """
         labels = []
         totals = []
         days_coef_dict = {
@@ -100,12 +135,22 @@ class OrderQuerySet(models.query.QuerySet):
 
 class OrderManager(models.Manager):
     def get_queryset(self):
+        """
+        Returns all orders.
+        """
         return OrderQuerySet(self.model, using=self._db)
 
     def by_billing_profile(self, request):
+        """
+        Returns all orders for billing profile in request.
+        """
         return self.get_queryset().by_billing_profile(request)
 
     def new_or_get(self, billing_obj, cart_obj):
+        """
+        Returns order instance with status 'created' if it already exists or
+        creates a new one and returns it.
+        """
         qs = Order.objects.filter(billing_profile=billing_obj,
                                   cart=cart_obj,
                                   active=True,
@@ -137,14 +182,23 @@ class Order(models.Model):
         return self.order_id
 
     def update_total(self):
+        """
+        Updates total sum in order according to cart total.
+        """
         self.total = self.cart.total
         self.save()
         return self.total
 
     def is_prepared(self):
+        """
+        Returns a boolean value whether order is prepared to be charged.
+        """
         return self.active and self.billing_profile and self.total > 0
 
     def create_purchases(self):
+        """
+        Adds purchases from the cart to the order instance.
+        """
         for p in self.cart.products.all():
             ProductPurchase.objects.get_or_create(
                 order_id=self.order_id,
@@ -154,6 +208,9 @@ class Order(models.Model):
         return ProductPurchase.objects.filter(order_id=self.order_id).count()
 
     def set_status_paid(self):
+        """
+        Changes order status to 'paid'.
+        """
         if self.status != 'paid':
             if self.is_prepared():
                 self.status = 'paid'
@@ -162,6 +219,9 @@ class Order(models.Model):
         return self.status
 
     def get_absolute_url(self):
+        """
+        Returns url for the order.
+        """
         return reverse("orders:detail", kwargs={'order_id': self.order_id})
 
 
@@ -215,9 +275,17 @@ class ProductPurchaseManager(models.Manager):
         products = Product.objects.filter(id__in=product_ids).distinct()
         return products
 
-    def check_in_purchased(self, request, product):
+    def last_order(self, request):
+        last_order = Order.objects.by_billing_profile(
+            request).order_by('-created').first()
+        queryset = self.get_queryset().filter(order_id=last_order.order_id).all()
+        product_ids = [x.product.id for x in queryset]
+        products = Product.objects.filter(id__in=product_ids).distinct()
+        return products
+
+    def purchased(self, request):
         qs_purchased = self.products_by_request(request)
-        return product in qs_purchased
+        return  qs_purchased
 
 
 class ProductPurchase(models.Model):

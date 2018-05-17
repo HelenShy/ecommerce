@@ -2,6 +2,9 @@ from .signals import object_viewed_signal
 
 
 class ObjectViewedMixin(object):
+    """
+    Sends signal each time object was viewed by a user.
+    """
     def get_context_data(self, *args, **kwargs):
         context = super(ObjectViewedMixin, self).get_context_data(*args, **kwargs)
         request = self.request

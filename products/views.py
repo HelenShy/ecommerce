@@ -25,6 +25,21 @@ class ProductListView(ListView):
         return context
 
 
+class ProductsInCategoryView(ListView):
+    template_name = 'products/list.html'
+
+    def get_queryset(self):
+        category = self.kwargs.get('category')
+        qs =  Product.objects.by_category(category)
+        return qs
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductsInCategoryView, self).get_context_data(*args, **kwargs)
+        cart_obj, cart_created = Cart.objects.new_or_get(self.request)
+        context['cart'] = cart_obj
+        return context
+
+
 class ProductDetailSlugView(ObjectViewedMixin, DetailView):
     queryset = Product.objects.all()
     template_name = 'products/detail.html'

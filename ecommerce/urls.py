@@ -24,7 +24,7 @@ from accounts.views import (LoginView,
                             logout_view)
 from analytics.views import ProductsHistoryView, SalesView, SalesAjaxView
 from .views import home_page
-from contact.views import contact_page
+from contact.views import ContactView
 from orders.views import PurchaseListView
 
 
@@ -35,7 +35,7 @@ urlpatterns = [
     path('logout/', logout_view, name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
     path('guest/', GuestRegisterView.as_view(), name='guest_register'),
-    path('contact/', contact_page, name='contact'),
+    path('contact/', ContactView.as_view(), name='contact'),
     path('account/', include(('accounts.urls', 'account'))),
     path('settings/', RedirectView.as_view(url='/account')),
     path('products/', include(('products.urls', 'products'))),
@@ -48,7 +48,7 @@ urlpatterns = [
     path('analytics/sales/', SalesView.as_view(), name='sales_analytics'),
     path('analytics/sales/data/', SalesAjaxView.as_view(), name='sales_analytics_ajax'),
     path('purchases/', PurchaseListView.as_view(), name='purchases'),
-    # path('category/', include(('categories.urls', 'category'))),
+    path('categories/', include(('categories.urls', 'categories'))),
 ]
 
 if settings.DEBUG:

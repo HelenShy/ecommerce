@@ -13,6 +13,9 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class BillingManager(models.Manager):
     def new_or_get(self, request):
+        """
+        Returns existing or creates new billing object for current user.
+        """
         user = request.user
         guest_id = request.session.get('guest_id')
         print(guest_id)
@@ -44,25 +47,41 @@ class BillingProfile(models.Model):
         return Charge.objects.do(self, order_obj, card)
 
     def get_cards(self):
+        """
+        Returns cards saved by current user.
+        """
         return self.card_set.all()
 
     @property
     def has_card(self):
+        """
+        Returns True if there are saved cards for current user or False if not.
+        """
         return self.get_cards().exists()
 
     @property
     def default_card(self):
+        """
+        Returns default card number for current user profile if there is one.
+        Else None.
+        """
         qs = self.get_cards().filter(default=True, active=True)
         if qs.exists():
             return qs.first()
         return None
 
     def set_cards_inactive(self):
+        """
+        Deactivates cards for the user.
+        """
         cards = self.get_cards()
         cards.update(active=False)
         return cards.filter(active=True).count()
 
     def get_payment_method(self):
+        """
+        Returns reference  to 'billing:payment' page.
+        """
         return reverse('billing:payment')
 
 
@@ -86,6 +105,9 @@ post_save.connect(post_save_create_billing_profile, sender=User)
 
 class CardManager(models.Manager):
     def add_new(self, billing_profile, card_response):
+        """
+        Adds new card to billing profile.
+        """
         if str(card_response.object) == "card":
             new_card = self.model(
                 billing_profile=billing_profile,
@@ -101,6 +123,9 @@ class CardManager(models.Manager):
         return None
 
     def all(self, *args, **kwargs):
+        """
+        Returns all active cards.
+        """
         return self.get_queryset().filter(active=True)
 
 
@@ -135,6 +160,9 @@ post_save.connect(post_save_change_default, sender=Card)
 
 class ChargeManager(models.Manager):
     def do(self, billing_profile, order_obj, card=None):
+        """
+        Charges for the purchase on site.
+        """
         card_obj = card
         if card is None:
             cards = billing_profile.card_set.filter(default=True)

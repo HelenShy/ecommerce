@@ -1,6 +1,9 @@
 from django.utils.http import is_safe_url
 
 class RequestAttachArgsMixin(object):
+    """
+    Passes request as an argument to a model.
+    """
     def get_form_kwargs(self):
         kwargs = super(RequestAttachArgsMixin, self).get_form_kwargs()
         kwargs['request'] = self.request
@@ -8,6 +11,10 @@ class RequestAttachArgsMixin(object):
 
 
 class NextUrlMixin(object):
+    """
+    Retrieves next argument sent with GET/POST requests and makes it accessable
+    as redirect_path.
+    """
     default_next = '/'
 
     def redirect_path(self):

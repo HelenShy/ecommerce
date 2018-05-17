@@ -9,6 +9,10 @@ User = settings.AUTH_USER_MODEL
 
 class CartManager(models.Manager):
     def new_or_get(self, request):
+        """
+        Returns a cart object if it is already saves in session or  else creates
+        and returns a new one.
+        """
         cart_id = request.session.get('cart_id', None)
         qs = Cart.objects.filter(id=cart_id)
         if qs.count() == 1:
@@ -26,6 +30,9 @@ class CartManager(models.Manager):
         return cart_obj, new_obj
 
     def new(self, user=None):
+        """
+        Creates a new cart instance.
+        """
         if user is not None:
             if user.is_authenticated:
                 return Cart.objects.create(user=user)

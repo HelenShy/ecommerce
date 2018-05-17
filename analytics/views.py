@@ -4,6 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.utils import timezone
 import datetime
 from django.http import JsonResponse
+import operator
 
 from carts.models import Cart
 from products.models import Product
@@ -23,7 +24,8 @@ class ProductsHistoryView(LoginRequiredMixin, ListView):
         request = self.request
         user = request.user
         products_viewed = user.objectviewed_set.by_model(Product)
-        return products_viewed
+        ordered = products_viewed.order_by('-changed', '-created')[:15]
+        return ordered
 
 
 class SalesView(LoginRequiredMixin, TemplateView):

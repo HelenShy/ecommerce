@@ -8,12 +8,14 @@
         <thead>
           <th>Order ID</th>
           <th>Status</th>
+          <th>Date created</th>
           <th>Total</th>
         </thead>
       {% for obj in object_list %}
         <tr>
           <td><a href="{{obj.get_absolute_url}}">{{obj.order_id}}</a></td>
           <td>{{obj.status}}</td>
+          <td>{{obj.created}}</td>
           <td>{{obj.total}}</td>
         </tr>
       {% empty %}

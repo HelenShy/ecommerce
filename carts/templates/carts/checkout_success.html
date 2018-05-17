@@ -1,8 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div>
-<h1>Order is successful</h1>
-<p>Thank you for the order.</p>
+<div class="container">
+  <div class="row justify-content-center my-3">
+    <div class="col-12 ">
+      <h3>Order is successful</h3>
+      <br/>
+      <p>Thank you for the order!</p>
+      <p>Below you can see links to the purchased files.
+      Also you can access them anytime in your Personal Cabinet in
+        <a href="{% url 'purchases' %}">Purchases</a> section.</p>
+    </div>
+  </div>
+  <div class='container'>
+    <div class='row'>
+      <table class='table col-lg-10 col-md-12'>
+      {% for obj in object_list %}
+        <tr>
+          <td><img class="purhased" src="{{ obj.image.url }}" alt="{{ obj.title }} logo"></td>
+          <td><a href="{{obj.product.get_absolute_url}}">{{obj.title}}</a></td>
+          <td>
+            Files:
+            {% for obj in obj.get_downloads %}
+            <a href="{{ obj.get_download_url }}">{{ obj.name }}</a>
+            {% endfor %}
+          </td>
+
+        </tr>
+      {% empty %}
+      {% endfor %}
+      </table>
+    </div>
+  </div>
 <div>
 {% endblock %}

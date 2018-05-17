@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
 from django.contrib import messages
+from django.views.generic import ListView
 
 from .models import Cart
 from products.models import Product
@@ -21,8 +22,8 @@ def cart_update(request):
         if not product_obj:
             return Product.DoesNotExist
         cart_obj, cart_new  = Cart.objects.new_or_get(request=request)
-        already_purchased = ProductPurchase.objects.check_in_purchased(
-            request, product_obj)
+        purchases = ProductPurchase.objects.purchased(request)
+        already_purchased = product_obj in purchases
         print('already_purchased')
         print(already_purchased)
         if already_purchased:
@@ -96,5 +97,9 @@ def checkout_page(request):
     return render(request, 'carts/checkout.html', context)
 
 
-def checkout_success_page(request):
-    return render(request, 'carts/checkout_success.html',{})
+class CheckoutSuccessView(ListView):
+    template_name = 'carts/checkout_success.html'
+
+    def get_queryset(self):
+        qs = ProductPurchase.objects.last_order(self.request)
+        return qs

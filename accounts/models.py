@@ -58,6 +58,9 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    """
+    User custom model
+    """
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255, blank=True, null=True, default='')
     is_active = models.BooleanField(default=True)
@@ -72,13 +75,13 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def get_full_name(self):
         """
-        Used to get a users full name
+        Returns user`s full name
         """
         return self.name
 
     def get_short_name(self):
         """
-        Used to get a users short name
+        Returns user`s short name
         """
         return self.name
 
@@ -87,17 +90,26 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     @property
     def is_staff(self):
+        """
+        Checks whether user is staff.
+        """
         if self.is_admin:
             return True
         return self.staff
 
     @property
     def is_admin(self):
+        """
+        Checks whether user is admin.
+        """
         return self.admin
 
 
 class EmailActivationQuerySet(models.query.QuerySet):
     def confirmable(self):
+        """
+        Checks whether email activation is valid and not outdated.
+        """
         now = timezone.now()
         start_date = now - timedelta(days=settings.DEFAULT_ACTIVATION_DAYS)
         return self.filter(activated=False, forced_expired=False).exclude(
@@ -134,10 +146,16 @@ class EmailActivation(models.Model):
         return self.email
 
     def can_activate(self):
+        """
+        Checks whether email activation is valid and not outdated
+        """
         qs = EmailActivation.objects.filter(pk=self.pk).confirmable()
         return qs.exists()
 
     def activate(self):
+        """
+        Activates newly registered users after they followed link in email.
+        """
         if self.can_activate():
             user = self.user
             user.is_active = True
@@ -148,6 +166,9 @@ class EmailActivation(models.Model):
         return False
 
     def send_activation(self):
+        """
+        Sends email with activation link for newly registered users.
+        """
         if not self.activated and not self.forced_expired:
             if self.key:
                 base_url = getattr(settings, 'BASE_URL')
@@ -174,11 +195,19 @@ class EmailActivation(models.Model):
         return False
 
     def regenerate_key(self):
+        """
+        Regenerates random key that id added to the link users need to follow
+        to activate their user account
+        """
         self.key = None
-        sself.save()
+        self.save()
         return self.key is not None
 
     def create_activation_key(self):
+        """
+        Creates random key that id added to the link users need to follow
+        to activate their user account
+        """
         key = unique_key_generator()
         qs = EmailActivation.objects.filter(key=key)
         if qs.exists():

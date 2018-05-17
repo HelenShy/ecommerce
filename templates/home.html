@@ -1,6 +1,49 @@
 {% extends 'base.html' %}
 
+<main>
 {% block content %}
-  <h1>Hello, world! :)</h1>
-  <p>Do yo see this: {{ premium }}</p>
+
+ <div class="cd-fixed-bg cd-fixed-bg--1">
+   <div class="cd-fixed-bg__header">
+    <h1>Buy books immediately at best prices</h1>
+    <br>
+    <a href="{% url "products:list" %}" class="btn btn-lg btn-warning btn-wide">BUY</a>
+  </div>
+  <!-- <div id="panel">
+    <div class="vertical-text">CATEGORIES</div>
+    <div id="hidden_panel">
+        Содержание блока
+    </div>
+</div> -->
+ </div>
+ <div class='container'>
+   <div class="cd-scrolling-bg cd-scrolling-bg--color-2">
+      <div class="cd-scrolling-bg__content">
+        <section class="section-genres">
+         <div class="row justify-content-center">
+           <div class="col-8">
+             <h5>GENRES</h5>
+             <hr>
+             <div class="columns genres-list">
+               {% for genre in genres %}
+               <a href="{{ genre.get_absolute_url }}"><p> {{ genre.title }} </p></a>
+               {% endfor %}
+              </div>
+            </div>
+         </div>
+       </section>
+
+       <section>
+        {% include 'card-slider.html' with objects=collections.bestseller title='BEST SELLERS' %}
+      </section>
+       <section>
+         {% include 'card-slider.html' with objects=collections.non_fiction title='NON FICTION BOOKS AT BEST PRICES' %}
+       </section>
+       <section>
+         {% include 'card-slider.html' with objects=collections.children title='MUST READS FOR CHILDREN' %}
+       </section>
+      </div>
+   </div>
+</div>
 {% endblock %}
+</main>

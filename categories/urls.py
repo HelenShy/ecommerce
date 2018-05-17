@@ -1,8 +1,6 @@
 from django.urls import path
-# from .views import (
-#                     CategoryDetailSlugView)
-#
-# urlpatterns = [
-#     path('', ProductListView.as_view(), name='list'),
-#     path('<slug:slug>/', ProductDetailSlugView.as_view(), name='detail'),
-# ]
+from .views import (CategoriesAjaxView)
+
+urlpatterns = [
+    path('data/', CategoriesAjaxView.as_view(), name='ajax-list'),
+]

@@ -5,7 +5,7 @@
     <div class='row'>
       {% for object in object_list %}
         <div class='col'>
-          {% include 'products/snippets/card.html' with instance=object cart=cart %}
+          {% include 'products/snippets/card.html' with object=object cart=cart %}
         </div>
       {% endfor %}
     </div>

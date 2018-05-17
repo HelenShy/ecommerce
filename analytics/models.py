@@ -12,6 +12,10 @@ User = settings.AUTH_USER_MODEL
 
 class ObjectViewedQuerySet(models.query.QuerySet):
     def by_model(self, models_class, distinct=True):
+        """
+        Returns all viewed objects of model type passed as 'models_class'
+        argument.
+        """
         c_type = ContentType.objects.get_for_model(models_class)
         qs = self.filter(content_type=c_type)
         if distinct:
@@ -22,9 +26,17 @@ class ObjectViewedQuerySet(models.query.QuerySet):
 
 class ObjectViewedManager(BaseUserManager):
     def get_queryset(self):
+        """
+        Returns all viewed objects of model type passed as 'models_class'
+        argument.
+        """
         return ObjectViewedQuerySet(self.model, using=self._db)
 
     def by_model(self, models_class, distinct=True):
+        """
+        Returns distinct viewed objects of model type passed as 'models_class'
+        argument.
+        """
         qs = ObjectViewedQuerySet(self.model, using=self._db)
         return qs.by_model(models_class, distinct)
 
