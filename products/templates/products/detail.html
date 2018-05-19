@@ -3,15 +3,16 @@
 {% block content %}
 
 <div class='container'>
-  <section class="book-info">
-  <div class='row  detail-info'>
+  <section class="book-info section_decorated">
+  <div class='row  detail-info text-left'>
     <div class="col-4">
       {% if object.image %}
         <img src='{{ object.image.url }}' class ='img-fluid'/>
       {% endif %}
     </div>
     <div class="col-4">
-      <p>{{ object.title }}</p>
+      <h5>{{ object.title }}</h5>
+      <p>{{ object.author }}</p>
       <hr>
       <div class="detail-info">
         <p>${{object.price}}</p>
@@ -19,7 +20,7 @@
       </div>
     </div>
   </div>
-  <div class=" detail-info">
+  <div class=" detail-info text-left">
       {{ object.description|linebreaks }}
   </div>
   </section>

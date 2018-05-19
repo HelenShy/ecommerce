@@ -120,7 +120,7 @@ class LoginForm(forms.Form):
                 raise forms.ValidationError(mark_safe(msg))
         user = authenticate(request, username=email, password=password)
         if user is None:
-            raise ValueError("Invalid credentials")
+            raise forms.ValidationError(mark_safe("Invalid credentials"))
         login(request, user)
         user_logged_in.send(user.__class__, instance=user, request=request)
         try:
@@ -170,5 +170,5 @@ class ReactivateEmailForm(forms.Form):
             This email does not exist. Would you like to <a href="{link}">
             register</a>?
             """.format(link=link)
-            return forms.ValidationError(mark_safe(msg))
+            raise forms.ValidationError(mark_safe(msg))
         return email

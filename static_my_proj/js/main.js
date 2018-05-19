@@ -23,9 +23,7 @@ function productIsPurchased(productId, submitSpan){
             isOwner = false
           }
         },
-        error: function(erorr){
-          console.log(error)
-
+        error: function(error){
         }
     })
     return isOwner
@@ -58,6 +56,7 @@ productForm.submit(function(event){
       } else{
           productAction.html(
             "<button type='submit' class='btn btn-success' data-action='true'>Add to cart</button>")
+
       }
       cartCounter = $(".navbar-cart-counter")
       cartCounter.text(formData.cart_count)
@@ -68,8 +67,8 @@ productForm.submit(function(event){
       }
     },
     error: function(error){
-      console.log("error")
-      console.log(error)
+      update_messages([{"message": "Error.", "level": 'ERROR'}]);
+      showPopUpBox("flashes");
     },
   })
 })
@@ -102,8 +101,8 @@ function updateCart(){
         cartBody.find(".cart-total").text(data.total)
       },
       error:  function(error){
-        console.log('error')
-        console.log(error)
+        update_messages([{"message": "Error.", "level": 'ERROR'}]);
+        showPopUpBox("flashes");
       }
     })
   }
@@ -131,18 +130,15 @@ document.addEventListener('DOMContentLoaded', function() {
   function update_messages(messages){
   $("#flashes").html("");
   $("#flashes").append("<ul class='messages flashes' id='popup-messages-content'></ul>");
-  console.log($("#flashes"));
   $.each(messages, function (i, m) {
                   $("#popup-messages-content").append("<li><div class='alert alert-"+m.level+"''>"+m.message+"</div></li>");
               });
             }
 
-
 // Extract form session flash messages that were sent from JS
   window.onload = function() {
 
       var message =  sessionStorage.getItem("message");
-      console.log(message);
       if (message) {
           var message = [{"message": message}];
           var level =  sessionStorage.getItem("level");
@@ -251,8 +247,6 @@ $(document).ready(function(){
       dropdownMenu.append(txt);
       },
       error: function(error){
-        console.log('error')
-        console.log(error)
       }
     });
   });

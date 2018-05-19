@@ -25,7 +25,7 @@ SECRET_KEY = '1p2yqdnd&uj(0v5!#=)+dylbzy-vi2j+3gx2ziqb13en9p6-e^'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 EMAIL_HOST      = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = 'skorost123'
@@ -33,7 +33,7 @@ EMAIL_HOST_USER = 'mls.housestage@gmail.com'
 EMAIL_PORT      = 587
 EMAIL_USE_TLS   = True
 EMAIL_USE_SSL = False
-DEFAULT_FROM_EMAIL  = 'BookLibrary <mls.housestage@gmail.com>'
+DEFAULT_FROM_EMAIL  = 'AllWorldBooks <mls.housestage@gmail.com>'
 
 BASE_URL = "127.0.0.1:8000"
 
@@ -109,6 +109,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'TEST_CHARSET': 'UTF8',
+    },
+    'TEST': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'test.sqlite3'),
+        'TEST_CHARSET': 'UTF8',
     }
 }
 

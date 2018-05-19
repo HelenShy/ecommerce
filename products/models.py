@@ -7,7 +7,6 @@ from django.urls import reverse
 from django.db.models import Q
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
-from django.db.models import Q
 
 from ecommerce.utils import unique_slug_generator, get_filename
 
@@ -90,7 +89,8 @@ class ProductManager(models.Manager):
 
 
 class Product(models.Model):
-    title = models.CharField(max_length=1200)
+    title = models.CharField(max_length=120)
+    author = models.CharField(max_length=120)
     slug = models.SlugField(blank=True, unique=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
@@ -104,7 +104,7 @@ class Product(models.Model):
     changed = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.title
+        return self.title + ' by ' + self.author
 
     def get_absolute_url(self):
         """

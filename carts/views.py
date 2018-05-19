@@ -24,8 +24,6 @@ def cart_update(request):
         cart_obj, cart_new  = Cart.objects.new_or_get(request=request)
         purchases = ProductPurchase.objects.purchased(request)
         already_purchased = product_obj in purchases
-        print('already_purchased')
-        print(already_purchased)
         if already_purchased:
             messages.success(request, 'product was already purchased')
             return redirect('purchases')
@@ -33,12 +31,10 @@ def cart_update(request):
             cart_obj.products.remove(product_obj)
             removed = True
             added = False
-            messages.add_message(request, messages.INFO, 'Removed successfully.')
         else:
             cart_obj.products.add(product_obj)
             removed = False
             added = True
-            messages.add_message(request, messages.INFO, 'Added successfully.')
     request.session['cart_items'] = cart_obj.products.count()
     if request.is_ajax():
         return JsonResponse({"added": added,

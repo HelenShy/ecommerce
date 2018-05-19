@@ -20,10 +20,8 @@ class CartManager(models.Manager):
             if cart_obj.user is None and request.user.is_authenticated:
                 cart_obj.user =  request.user
                 cart_obj.save( )
-            print('Cart already exists')
             new_obj = False
         else:
-            print('Create new cart')
             cart_obj = Cart.objects.new(user=request.user)
             request.session['cart_id'] = cart_obj.id
             new_obj = True

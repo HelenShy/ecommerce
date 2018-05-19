@@ -19,7 +19,7 @@
  <div class='container'>
    <div class="cd-scrolling-bg cd-scrolling-bg--color-2">
       <div class="cd-scrolling-bg__content">
-        <section class="section-genres">
+        <section class="section-genres section_decorated">
          <div class="row justify-content-center">
            <div class="col-8">
              <h5>GENRES</h5>
@@ -33,13 +33,13 @@
          </div>
        </section>
 
-       <section>
+       <section class="section_decorated">
         {% include 'card-slider.html' with objects=collections.bestseller title='BEST SELLERS' %}
       </section>
-       <section>
+       <section class="section_decorated">
          {% include 'card-slider.html' with objects=collections.non_fiction title='NON FICTION BOOKS AT BEST PRICES' %}
        </section>
-       <section>
+       <section class="section_decorated">
          {% include 'card-slider.html' with objects=collections.children title='MUST READS FOR CHILDREN' %}
        </section>
       </div>

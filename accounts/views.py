@@ -38,6 +38,7 @@ class LoginView(RequestAttachArgsMixin, NextUrlMixin, FormView):
 
     def form_valid(self, form):
         redirect_path = self.redirect_path()
+        messages.success(self.request, 'Logged in succesfully.')
         return redirect(redirect_path)
 
 
@@ -46,9 +47,15 @@ class RegisterView(CreateView):
     template_name = 'accounts/register.html'
     success_url = '/login/'
 
+    def form_valid(self, form):
+        super(RegisterView, self).form_valid(form)
+        messages.success(self.request, 'Please check your email and confirm your account.')
+        return redirect(self.success_url)
+
 
 def logout_view(request):
     logout(request)
+    messages.success(request, 'User log out.')
     return redirect("/")
 
 

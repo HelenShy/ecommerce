@@ -2,10 +2,45 @@
 
 {% block content %}
 <div class="container">
-  <h1>Register</h1>
-  <form method='POST'> {% csrf_token %}
-    {{ form }}
-    <button type='submit' class='btn btn-default'>Submit</button>
-  </form>
+  <section class="section_decorated">
+    <h1 class=" text-center">Register</h1>
+    <div class="row justify-content-center">
+        <form method='POST'> {% csrf_token %}
+
+          <p>{{ form.non_field_errors }}</p>
+          <div class="fieldWrapper row text-left">
+              {{ form.email.errors }}
+              <div class="col-10 col-md-6 offset-1 offset-md-0">
+                <label for="{{ form.email.id_for_label }}">Email:</label>
+              </div>
+              <div class="col-10 col-md-6 offset-1 offset-md-0">
+                {{ form.email | safe}}
+              </div>
+          </div>
+          <div class="fieldWrapper row text-left">
+              {{ form.password1.errors }}
+              <div class="col-10 col-md-6  offset-1 offset-md-0">
+                <label for="{{ form.password1.id_for_label }}">Password:</label>
+              </div>
+              <div class="col-10 col-md-5 offset-1 offset-md-0">
+                {{ form.password1 | safe }}
+              </div>
+          </div>
+          <div class="fieldWrapper row text-left">
+              {{ form.password2.errors }}
+              <div class="col-10 col-md-6 offset-1 offset-md-0">
+                <label for="{{ form.password2.id_for_label }}">Confirm password:</label>
+              </div>
+              <div class="col-10 col-md-6 offset-1 offset-md-0">
+                {{ form.password2 | safe }}
+              </div>
+          </div>
+          <br>
+        <div class="  text-center">
+          <button type='submit' class='btn btn-success'>Submit</button>
+        </div>
+        </form>
+    </div>
+  </section>
 </div>
 {% endblock %}

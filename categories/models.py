@@ -31,10 +31,11 @@ class Category(models.Model):
         verbose_name_plural = "Categories"
 
 
-@receiver(pre_save, sender=Category)
-def my_callback(sender, instance, *args, **kwargs):
+def pre_save_category_add_slug(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(pre_save_category_add_slug, sender=Category)
 
 
 class Collection(models.Model):
@@ -50,7 +51,8 @@ class Collection(models.Model):
         return self.title
 
 
-@receiver(pre_save, sender=Collection)
-def my_callback(sender, instance, *args, **kwargs):
+def pre_save_collection_add_slug(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(pre_save_collection_add_slug, sender=Collection)

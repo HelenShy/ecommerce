@@ -18,7 +18,6 @@ class BillingManager(models.Manager):
         """
         user = request.user
         guest_id = request.session.get('guest_id')
-        print(guest_id)
         obj = None
         created = False
         if user.is_authenticated:
@@ -87,8 +86,6 @@ class BillingProfile(models.Model):
 
 
 def pre_save_create_stripe_id(sender, instance, *args, **kwargs):
-    print("instance.stripe_id")
-    print(instance.stripe_id)
     if not instance.stripe_id:
         stripe_customer = stripe.Customer.create(email=instance.email)
         instance.stripe_id = stripe_customer.id
@@ -149,8 +146,6 @@ class Card(models.Model):
 
 def post_save_change_default(sender, instance, created, *args, **kwargs):
     if instance.default:
-        print(instance.default)
-        print("instance.default")
         billing_profile = instance.billing_profile
         qs = Card.objects.filter(billing_profile=billing_profile).exclude(pk=instance.pk)
         qs.update(default=False)

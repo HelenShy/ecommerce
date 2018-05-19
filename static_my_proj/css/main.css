@@ -3,10 +3,6 @@ main{
 
 }
 
-nav.navbar{
-  background-color: #F1F1F1;
-}
-
 .cd-fixed-bg {
   min-height: 100vh;
   background-size: cover;
@@ -118,11 +114,18 @@ nav.navbar{
 section{
   margin-top: 5vh;
   margin-bottom: 5vh;
-  padding: 15vh 1vw;
-  background: #F8F9FA;
+  padding: 5vh 1vw;
+}
 
+section h2{
+  padding-bottom: 5vh;
+}
+
+section.section_decorated{
+  background: #ecf0f1;
   border-radius: 1rem;
-
+  padding: 15vh 1vw;
+  text-align: center;
 }
 
 
@@ -194,6 +197,10 @@ div.slick-list{
   margin-top: 4rem;
 }
 
+/* .collection-list h5{
+  background:#ecf0f1;
+} */
+
 section.book-info{
   padding: 1vh 3vw;
 }
@@ -203,7 +210,8 @@ img.purhased{
 }
 
 footer{
-  background:#dfe6e9;
+  background:#363D42;
+  color:#828589;
   padding-top: 3vh;
   padding-bottom: 8vh;
   text-align: center;

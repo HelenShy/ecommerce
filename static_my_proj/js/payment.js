@@ -77,14 +77,14 @@ function stripeTokenHandler(token) {
     data: data,
     success: function(data){
       card.clear()
-      console.log(data.message || 'success')
-      sessionStorage.setItem('message', data.message || 'SUCCESS');
-      sessionStorage.setItem('level', 'SUCCESS');
       if (nextUrl) {
+        sessionStorage.setItem('message', data.message || 'SUCCESS');
+        sessionStorage.setItem('level', 'SUCCESS');
         window.location.href = nextUrl;
       }
       else {
-        window.location.reload();
+        update_messages([{"message": data.message, "level": 'SUCCESS'}]);
+        showPopUpBox("flashes");
       }
     },
     error:  function(error){

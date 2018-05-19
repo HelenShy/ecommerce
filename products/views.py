@@ -8,7 +8,7 @@ from mimetypes import guess_type
 import os
 
 
-from .models import Product, ProductFile
+from products.models import Product, ProductFile
 from orders.models import ProductPurchase
 from carts.models import Cart
 from analytics.mixins import ObjectViewedMixin
@@ -22,6 +22,7 @@ class ProductListView(ListView):
         context = super(ProductListView, self).get_context_data(*args, **kwargs)
         cart_obj, cart_created = Cart.objects.new_or_get(self.request)
         context['cart'] = cart_obj
+        context['title'] = 'All books'
         return context
 
 
@@ -37,6 +38,8 @@ class ProductsInCategoryView(ListView):
         context = super(ProductsInCategoryView, self).get_context_data(*args, **kwargs)
         cart_obj, cart_created = Cart.objects.new_or_get(self.request)
         context['cart'] = cart_obj
+        category = self.kwargs.get('category')
+        context['title'] = category.title
         return context
 
 
@@ -60,6 +63,8 @@ class ProductDownloadView(View):
             raise Http404("Downloads not found")
         download_obj = downloads.first()
         download_accessable = download_obj.free
+        print('download_accessable')
+        print(download_accessable)
         if not download_accessable:
             purchases = ProductPurchase.objects.products_by_request(self.request)
             if download_obj.product in purchases:
