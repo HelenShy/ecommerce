@@ -209,6 +209,61 @@ img.purhased{
   max-height:30vh;
 }
 
+a.tag{
+  padding: 5px 10px;
+  clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%);
+  text-decoration: none;
+  background: white;
+  text-transform: uppercase;
+  shadow: 2px 2px 3px 3px;
+}
+
+p.collection{
+  padding: 3px 5px;
+  margin: 10px 2px;
+  /* clip-path: polygon(0% 0%, 90% 0%, 100% 50%, 90% 100%, 0% 100%); */
+  display: inline-block;
+  text-decoration: none;
+  background: #f9ca24;
+  text-transform: uppercase;
+  box-shadow: 2px 2px 3px 3px #f1f2f6;
+  color: white;
+  font-size: 0.8rem;
+}
+
+a.author{
+  color: #2980b9;
+  text-decoration: none;
+}
+
+a.author:hover{
+  color:#3498db;
+}
+
+.inline{
+    display: inline-block;
+}
+
+ul.authors{
+  display: inline;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+ul.authors li{
+  display: inline;
+}
+
+ul.authors li:after {
+  content: ", ";
+  color:#2980b9;
+}
+
+ul.authors li:last-child:after {
+  content: "";
+}
+
 footer{
   background:#363D42;
   color:#828589;

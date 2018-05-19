@@ -12,7 +12,7 @@ from products.models import Product, ProductFile
 from orders.models import ProductPurchase
 from carts.models import Cart
 from analytics.mixins import ObjectViewedMixin
-
+from categories.models import Category, Author
 
 class ProductListView(ListView):
     queryset = Product.objects.all()
@@ -30,16 +30,33 @@ class ProductsInCategoryView(ListView):
     template_name = 'products/list.html'
 
     def get_queryset(self):
-        category = self.kwargs.get('category')
-        qs =  Product.objects.by_category(category)
+        category = Category.objects.get(slug=self.kwargs.get('slug'))
+        qs =  Product.objects.by_category(category.title)
         return qs
 
     def get_context_data(self, *args, **kwargs):
         context = super(ProductsInCategoryView, self).get_context_data(*args, **kwargs)
         cart_obj, cart_created = Cart.objects.new_or_get(self.request)
         context['cart'] = cart_obj
-        category = self.kwargs.get('category')
+        category = Category.objects.get(slug=self.kwargs.get('slug'))
         context['title'] = category.title
+        return context
+
+
+class ProductsByAuthorView(ListView):
+    template_name = 'products/list.html'
+
+    def get_queryset(self):
+        author = Author.objects.get(slug=self.kwargs.get('slug'))
+        qs =  Product.objects.by_author(author.name)
+        return qs
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductsByAuthorView, self).get_context_data(*args, **kwargs)
+        cart_obj, cart_created = Cart.objects.new_or_get(self.request)
+        context['cart'] = cart_obj
+        author = Author.objects.get(slug=self.kwargs.get('slug'))
+        context['title'] = author.name
         return context
 
 
@@ -63,8 +80,6 @@ class ProductDownloadView(View):
             raise Http404("Downloads not found")
         download_obj = downloads.first()
         download_accessable = download_obj.free
-        print('download_accessable')
-        print(download_accessable)
         if not download_accessable:
             purchases = ProductPurchase.objects.products_by_request(self.request)
             if download_obj.product in purchases:

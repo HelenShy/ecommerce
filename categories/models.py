@@ -24,7 +24,7 @@ class Category(models.Model):
         """
         Returns category`s url.
         """
-        return reverse("products:category", kwargs={'category': self.title})
+        return reverse("products:category", kwargs={'slug': self.slug})
 
     class Meta:
         verbose_name = "Category"
@@ -56,3 +56,31 @@ def pre_save_collection_add_slug(sender, instance, *args, **kwargs):
         instance.slug = unique_slug_generator(instance)
 
 pre_save.connect(pre_save_collection_add_slug, sender=Collection)
+
+
+class Author(models.Model):
+    name = models.CharField(max_length=1200)
+    slug = models.SlugField(blank=True, unique=True)
+    products = models.ManyToManyField(Product, blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    changed = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def title(self):
+        return self.name
+
+    def get_absolute_url(self):
+        """
+        Returns author`s page url.
+        """
+        return reverse("products:author", kwargs={'slug': self.slug})
+
+
+def pre_save_collection_add_slug(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(pre_save_collection_add_slug, sender=Author)

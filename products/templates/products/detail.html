@@ -10,9 +10,26 @@
         <img src='{{ object.image.url }}' class ='img-fluid'/>
       {% endif %}
     </div>
-    <div class="col-4">
-      <h5>{{ object.title }}</h5>
-      <p>{{ object.author }}</p>
+    <div class="col-8">
+      <h3 class='inline'>{{ object.title }}</h3>
+      {% for collection in object.collection_set.all %}
+      <small><p class='collection'>{{ collection }}</p></small>
+      {% empty %}
+      {% endfor %}
+
+      <p>
+        <ul class='authors'>
+          {% for author in object.author_set.all %}
+          <li><a class="author" href="{{ author.get_absolute_url }}">{{ author }}</a></li>
+          {% empty %}
+          {% endfor %}
+        </ul>
+      </p>
+
+      {% for category in object.category_set.all %}
+      <small><a class='tag' href="{{ category.get_absolute_url }}">{{ category }}</a></small>
+      {% empty %}
+      {% endfor %}
       <hr>
       <div class="detail-info">
         <p>${{object.price}}</p>

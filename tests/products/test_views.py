@@ -36,7 +36,7 @@ class TestCartsViews(TestCase):
         category.products.add(Product.objects.get(id=1))
         resp = self.client.get(reverse(
             'products:category',
-            kwargs={'category':category.title}
+            kwargs={'slug':category.slug}
             ), follow=True)
         self.assertContains(resp, product.title, status_code=200)
         self.assertNotContains(resp, another_product.title, status_code=200)

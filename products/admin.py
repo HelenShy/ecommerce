@@ -3,7 +3,7 @@ from django.contrib import admin
 # Register your models here.
 
 from .models import Product, ProductFile
-from categories.models import Category, Collection
+from categories.models import Category, Collection, Author
 
 
 class ProductFileInline(admin.TabularInline):
@@ -20,6 +20,10 @@ class CategoryInline(admin.TabularInline):
 
 class CollectionInline(admin.TabularInline):
     model = Collection.products.through
+
+
+class AuthorInline(admin.TabularInline):
+    model = Author.products.through
 
 
 class ProductAdmin(admin.ModelAdmin):

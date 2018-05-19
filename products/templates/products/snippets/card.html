@@ -1,4 +1,4 @@
-<div class="card clickable" style="width: 12rem;" data-url="{{ object.get_absolute_url }}">
+<div class="card clickable my-3 mx-3" style="width: 12rem;" data-url="{{ object.get_absolute_url }}">
   {% if object.image %}
   <a href="{{ object.get_absolute_url }}">
     <img class="card-img-top" src="{{ object.image.url }}" alt="{{ object.title }} logo">
@@ -6,7 +6,7 @@
   {% endif %}
   <div class="card-body">
     <h5 class="card-title">{{ object.title }}</h5>
-    <p class="card-title"><em>{{ object.author }}</em></p>
+    <p class="card-title"><em>{{ object.authors }}</em></p>
     <p class="card-text">${{ object.price }}</p>
     {% include "products/snippets/cartupdate-form.html" with cart=cart product=object %}
   </div>

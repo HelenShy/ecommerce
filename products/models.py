@@ -52,6 +52,14 @@ class ProductQuerySet(models.query.QuerySet):
         qs = self.filter(Q(collection__title=collection))
         return qs
 
+    def by_author(self, author):
+        """
+        Returns all products for defined author.
+        """
+        products = Product.objects.all()
+        qs = self.filter(Q(author__name=author))
+        return qs
+
 
 class ProductManager(models.Manager):
     def get_queryset(self):
@@ -68,11 +76,12 @@ class ProductManager(models.Manager):
 
     def search(self, query):
         """
-        Returns products filtering by title, description, category.
+        Returns products filtering by title, description, category, author name.
         """
         lookups = (Q(title__icontains=query) |
                    Q(description__icontains=query) |
-                   Q(category__title__icontains=query))
+                   Q(category__title__icontains=query) |
+                   Q(author__name__icontains=query))
         return self.get_queryset().filter(lookups).distinct()
 
     def by_category(self, category):
@@ -87,10 +96,15 @@ class ProductManager(models.Manager):
         """
         return self.all().by_collection(collection)
 
+    def by_author(self, author):
+        """
+        Returns all active products for defined author.
+        """
+        return self.all().by_author(author)
+
 
 class Product(models.Model):
     title = models.CharField(max_length=120)
-    author = models.CharField(max_length=120)
     slug = models.SlugField(blank=True, unique=True)
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2, null=True)
@@ -104,7 +118,7 @@ class Product(models.Model):
     changed = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.title + ' by ' + self.author
+        return self.title
 
     def get_absolute_url(self):
         """
@@ -115,6 +129,12 @@ class Product(models.Model):
     @property
     def name(self):
         return self.title
+
+    @property
+    def authors(self):
+        authors = ", ".join([author.name for author in self.author_set.all()])
+        print(authors)
+        return authors
 
     def get_downloads(self):
         """
