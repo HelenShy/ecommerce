@@ -78,14 +78,11 @@ class GuestForm(forms.ModelForm):
 
     def save(self, commit=True):
         # Save the provided password in hashed format
-        print('0 save')
         obj = super(GuestForm, self).save(commit=False)
-        print('1 save')
         if commit:
             obj.save()
             request = self.request
             request.session['guest_id'] = obj.id
-            print('2 save')
         return obj
 
 

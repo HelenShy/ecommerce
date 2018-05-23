@@ -133,7 +133,6 @@ class Product(models.Model):
     @property
     def authors(self):
         authors = ", ".join([author.name for author in self.author_set.all()])
-        print(authors)
         return authors
 
     def get_downloads(self):

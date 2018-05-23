@@ -32,6 +32,5 @@ def payment_create_page(request):
             customer = stripe.Customer.retrieve(billing_profile.stripe_id)
             card_response = customer.sources.create(source=token)
             card_obj = Card.objects.add_new(billing_profile, card_response)
-            print(card_obj)
         return JsonResponse({"message": "Your card was successfully added"})
     return HttpResponse("error", 401)

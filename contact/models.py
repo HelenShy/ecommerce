@@ -32,5 +32,4 @@ class Contact(models.Model):
             html_message=html_,
             fail_silently=False
         )
-        print(sent_mail)
         return sent_mail

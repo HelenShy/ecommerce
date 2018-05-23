@@ -53,7 +53,6 @@ class Cart(models.Model):
 def products_changed(sender, instance, action, **kwargs):
     if action == "post_add" or action == "post_remove" or action == "post_clear":
         instance.total = 0
-        print(instance)
         products = instance.products.all()
         for product in products:
             instance.total += product.price

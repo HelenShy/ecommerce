@@ -80,8 +80,6 @@ def checkout_page(request):
                 if not billing_obj.user:
                     billing_obj.set_cards_inactive()
                 return redirect('carts:success')
-            else:
-                print(charge_msg)
     context = {
         'billing': billing_obj,
         'order': order_obj,
