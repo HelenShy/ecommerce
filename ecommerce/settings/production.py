@@ -38,6 +38,11 @@ BASE_URL = "https://all-world-books.herokuapp.com/"
 
 DEFAULT_ACTIVATION_DAYS = 7
 
+ADMINS = (
+    ('AllWorldBooks admin', 'mls.housestage@gmail.com'),
+)
+MANAGERS = ADMINS
+
 # Application definition
 
 INSTALLED_APPS = [
