@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 SECRET_KEY = '1p2yqdnd&uj(0v5!#=)+dylbzy-vi2j+3gx2ziqb13en9p6-e^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'all-world-books.herokuapp.com', '.herokuapp.com']
 
