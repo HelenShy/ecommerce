@@ -33,9 +33,9 @@ EMAIL_HOST_USER = 'mls.housestage@gmail.com'
 EMAIL_PORT      = 587
 EMAIL_USE_TLS   = True
 EMAIL_USE_SSL = False
-DEFAULT_FROM_EMAIL  = 'BookLibrary <mls.housestage@gmail.com>'
+DEFAULT_FROM_EMAIL  = 'AllWorldBooks <mls.housestage@gmail.com>'
 
-BASE_URL = "127.0.0.1:8000"
+BASE_URL = "https://all-world-books.herokuapp.com/"
 
 # Application definition
 
@@ -159,7 +159,7 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_cdn', 'media_root')
 
 
 CORS_REPLACE_HTTPS_REFERER      = False
-HOST_SCHEME                     = "http://"
+HOST_SCHEME                     = "https://"
 SECURE_PROXY_SSL_HEADER         = None
 SECURE_SSL_REDIRECT             = False
 SESSION_COOKIE_SECURE           = False
