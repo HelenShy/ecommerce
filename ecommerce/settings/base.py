@@ -37,6 +37,8 @@ DEFAULT_FROM_EMAIL  = 'AllWorldBooks <mls.housestage@gmail.com>'
 
 BASE_URL = "https://all-world-books.herokuapp.com/"
 
+DEFAULT_ACTIVATION_DAYS = 7
+
 # Application definition
 
 INSTALLED_APPS = [
