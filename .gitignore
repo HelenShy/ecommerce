@@ -104,6 +104,6 @@ ENV/
 
 *.mp4
 .mp4
-.sqlite3
+*.sqlite3
 
 *local.py

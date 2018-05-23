@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 SECRET_KEY = '1p2yqdnd&uj(0v5!#=)+dylbzy-vi2j+3gx2ziqb13en9p6-e^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'all-world-books.herokuapp.com', '.herokuapp.com']
+ALLOWED_HOSTS = ['all-world-books.herokuapp.com', '.herokuapp.com']
 
 EMAIL_HOST      = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = 'Speed123!'
@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # customized apps
+    'storages',
     'accounts',
     'products',
     'search',
@@ -118,10 +119,10 @@ DATABASES = {
 }
 
 
-# import dj_database_url
-# db_from_env = dj_database_url.config() #postgreSQL Database in heroku
-# DATABASES['default'].update(db_from_env)
-# DATABASES['default']['CONN_MAX_AGE'] = 500
+import dj_database_url
+db_from_env = dj_database_url.config() #postgreSQL Database in heroku
+DATABASES['default'].update(db_from_env)
+DATABASES['default']['CONN_MAX_AGE'] = 500
 
 
 # Password validation
@@ -173,6 +174,9 @@ MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_cdn', 'media_root')
 PROTECTED_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_cdn', 'protected_media')
 
 
+from ecommerce.aws.conf import *
+
+
 CORS_REPLACE_HTTPS_REFERER      = True
 HOST_SCHEME                     = "https://"
 SECURE_PROXY_SSL_HEADER         = ('HTTP_X_FORWARDED_PROTO', 'http')
@@ -182,3 +186,4 @@ CSRF_COOKIE_SECURE              = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS  = True
 SECURE_HSTS_SECONDS             = 1000000
 SECURE_FRAME_DENY               = True
+
