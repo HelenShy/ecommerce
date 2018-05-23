@@ -23,9 +23,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 SECRET_KEY = '1p2yqdnd&uj(0v5!#=)+dylbzy-vi2j+3gx2ziqb13en9p6-e^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'all-world-books.herokuapp.com']
 
 EMAIL_HOST      = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = 'skorost123'
@@ -33,7 +33,7 @@ EMAIL_HOST_USER = 'mls.housestage@gmail.com'
 EMAIL_PORT      = 587
 EMAIL_USE_TLS   = True
 EMAIL_USE_SSL = False
-DEFAULT_FROM_EMAIL  = 'BookLibrary <mls.housestage@gmail.com>'
+DEFAULT_FROM_EMAIL  = 'AllWorldBooks <mls.housestage@gmail.com>'
 
 BASE_URL = "127.0.0.1:8000"
 
@@ -66,8 +66,8 @@ LOGIN_URL_REDIRECT = '/'
 LOGOUT_URL = '/logout/'
 
 
-STRIPE_SECRET_KEY = ''
-STRIPE_PUB_KEY = ''
+STRIPE_SECRET_KEY = 'sk_test_tKYCBEWQCz0jmZBg3aSTKqH0'
+STRIPE_PUB_KEY = 'pk_test_716TWW4EdvbZe504AYXZY361'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -157,6 +157,7 @@ STATIC_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_cdn', 'static_root
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_cdn', 'media_root')
+PROTECTED_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'static_cdn', 'protected_media')
 
 
 CORS_REPLACE_HTTPS_REFERER      = True

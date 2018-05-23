@@ -107,3 +107,5 @@ ENV/
 .sqlite3
 
 /django_api/settings.py
+
+*local.py
