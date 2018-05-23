@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['127.0.0.1']
 
 EMAIL_HOST      = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD = 'skorost123'
+EMAIL_HOST_PASSWORD = 'Speed123!'
 EMAIL_HOST_USER = 'mls.housestage@gmail.com'
 EMAIL_PORT      = 587
 EMAIL_USE_TLS   = True
