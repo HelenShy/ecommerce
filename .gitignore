@@ -106,6 +106,6 @@ ENV/
 .mp4
 .sqlite3
 
-/django_api/settings.py
-
 *local.py
+
+static_my_proj
