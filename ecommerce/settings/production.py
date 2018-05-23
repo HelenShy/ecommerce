@@ -32,7 +32,7 @@ EMAIL_HOST_PASSWORD = 'skorost123'
 EMAIL_HOST_USER = 'mls.housestage@gmail.com'
 EMAIL_PORT      = 587
 EMAIL_USE_TLS   = True
-EMAIL_USE_SSL = True
+EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL  = 'AllWorldBooks <mls.housestage@gmail.com>'
 
 BASE_URL = "https://all-world-books.herokuapp.com/"
