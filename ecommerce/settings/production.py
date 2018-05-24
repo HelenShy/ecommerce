@@ -20,7 +20,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1p2yqdnd&uj(0v5!#=)+dylbzy-vi2j+3gx2ziqb13en9p6-e^'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -28,7 +28,7 @@ DEBUG = False
 ALLOWED_HOSTS = ['all-world-books.herokuapp.com', '.herokuapp.com']
 
 EMAIL_HOST      = 'smtp.gmail.com'
-EMAIL_HOST_PASSWORD = 'Speed123!'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PASSWORD')
 EMAIL_HOST_USER = 'mls.housestage@gmail.com'
 EMAIL_PORT      = 587
 EMAIL_USE_TLS   = True
@@ -74,8 +74,8 @@ LOGIN_URL_REDIRECT = '/'
 LOGOUT_URL = '/logout/'
 
 
-STRIPE_SECRET_KEY = 'sk_test_tKYCBEWQCz0jmZBg3aSTKqH0'
-STRIPE_PUB_KEY = 'pk_test_716TWW4EdvbZe504AYXZY361'
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_PUB_KEY = os.environ.get('STRIPE_PUB_KEY')
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

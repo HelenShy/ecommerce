@@ -9,6 +9,8 @@ from django.conf import settings
 from django.core.files.storage import FileSystemStorage
 
 from ecommerce.utils import unique_slug_generator, get_filename
+from ecommerce.aws.utils import ProtectedS3BototStorage
+from ecommerce.aws.download.utils import AWSDownload
 
 
 def get_filename_ext(filepath):
@@ -155,31 +157,61 @@ def upload_file_loc(instance, filename):
     Returns path to which uploaded product can be uploaded.
     """
     slug = instance.product.slug
+    _id = instance.id
+    if _id is None:
+        Klass = instance.__class__
+        qs = Klass.objects.all().order_by('-pk')
+        if qs.exists():
+            _id = qs.first() + 1
+        else:
+            _id = 0
     if not slug:
         slug = unique_slug_generator(instance.product)
-    location = 'product/{slug}/'.format(slug=instance.product)
+    location = 'product/{slug}/{id}'.format(slug=instance.product, id=_id)
     return location + filename
 
 
 class ProductFile(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    name = models.CharField(max_length=120, null=True, blank=True)
     file = models.FileField(Product, upload_to=upload_file_loc,
-                            storage=FileSystemStorage(
-                                location=settings.PROTECTED_ROOT))
+                            storage=ProtectedS3BototStorage())
     free = models.BooleanField(default=False)
 
     def __str__(self):
         return (self.file.name)
 
     @property
-    def name(self):
-        return get_filename(self.file.name)
+    def display_name(self):
+        orig_name = get_filename(self.file.name)
+        if self.name:
+            return self.name
+        return orig_name
 
     def get_default_url(self):
         """
         Returns url of the product.
         """
         return self.product.get_absolute_url()
+
+    def generate_download_url(self):
+        """
+        Generates download url for the file.
+        """ 
+        bucket = getattr(settings, 'AWS_STORAGE_BUCKET_NAME')
+        region = getattr(settings, 'S3DIRECT_REGION')
+        access_key = getattr(settings, 'AWS_ACCESS_KEY_ID')
+        secret_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY')
+        if not bucket or region or access_key or secret_key:
+            return "/"
+        PROTECTED_DIR_NAME = getattr(settings, 
+                                    'PROTECTED_DIR_NAME', 
+                                    'protected')
+        path = "{base}/{file_path}".format(base=PROTECTED_DIR_NAME,
+                                            file_path=str(self.file))
+        aws_dl_object = AWSDownload(access_key, secret_key, bucket, region)
+        file_url = aws_dl_object.generate_url(path, new_filename=self.display_name)
+        return file_url
 
     def get_download_url(self):
         """

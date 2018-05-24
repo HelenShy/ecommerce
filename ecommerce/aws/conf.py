@@ -1,9 +1,10 @@
 import datetime
+import os
 
 AWS_GROUP_NAME = "AllWorldBooks_Group"
 AWS_USERNAME = "AllWorldBooksUser"
-AWS_ACCESS_KEY_ID = "AKIAIAKC74OOCTAHAEVA"
-AWS_SECRET_ACCESS_KEY = "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"
+AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID', "AKIAIAKC74OOCTAHAEVA")
+AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY', "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")
 
 AWS_FILE_EXPIRE = 200
 AWS_PRELOAD_METADATA = True
@@ -27,3 +28,9 @@ AWS_HEADERS = {
     'Expires': expires,
     'Cache-Control': 'max-age=%d' % (int(two_months.total_seconds()), ),
 }
+
+PROTECTED_DIR_NAME = 'protected'
+PROTECTED_MEDIA_URL = '//%s.s3.amazonaws.com/%s/' %( 
+                    AWS_STORAGE_BUCKET_NAME,
+                    PROTECTED_DIR_NAME)
+AWS_DOWNLOAD_EXPIRE = 5000

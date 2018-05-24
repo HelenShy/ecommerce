@@ -15,7 +15,7 @@
           <td><a href="{{obj.product.get_absolute_url}}">{{obj.title}}</a></td>
           <td>
             {% for obj in obj.get_downloads %}
-            <a href="{{ obj.get_download_url }}">{{ obj.name }}</a>
+            <a href="{{ obj.get_download_url }}">{{ obj.display_name }}</a>
             {% endfor %}
           </td>
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views.generic  import ListView, DetailView, View
-from django.http import Http404, HttpResponse
+from django.http import Http404, HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
 from wsgiref.util import FileWrapper
@@ -87,16 +87,6 @@ class ProductDownloadView(View):
             else:
                 messages.error(self.request, "You do not have access to download this file.")
                 return redirect(download_obj.get_default_url())
-        file_root = settings.PROTECTED_ROOT
-        filepath = download_obj.file.path
-        final_filepath = os.path.join(file_root, filepath)
-        with open(filepath, 'rb') as f:
-            wrapper = FileWrapper(f)
-            mimetype = 'application/force-download'
-            guessed_mimetype = guess_type(filepath)[0]
-            if guessed_mimetype:
-                mimetype = guessed_mimetype
-            resp = HttpResponse(wrapper, content_type=mimetype)
-            resp['Content-Disposition'] = "attachment;filename=%s" %(download_obj.name)
-            resp["X-SendFile"] = str(download_obj.name)
-            return resp
+        
+        aws_filepath = download_obj.generate_download_url()
+        return HttpResponseRedirect(aws_filepath)
