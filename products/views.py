@@ -12,7 +12,7 @@ from products.models import Product, ProductFile
 from orders.models import ProductPurchase
 from carts.models import Cart
 from analytics.mixins import ObjectViewedMixin
-from categories.models import Category, Author
+from categories.models import Category, Collection, Author 
 
 class ProductListView(ListView):
     queryset = Product.objects.all()
@@ -40,6 +40,23 @@ class ProductsInCategoryView(ListView):
         context['cart'] = cart_obj
         category = Category.objects.get(slug=self.kwargs.get('slug'))
         context['title'] = category.title
+        return context
+
+
+class ProductsInCollectionView(ListView):
+    template_name = 'products/list.html'
+
+    def get_queryset(self):
+        collection = Collection.objects.get(slug=self.kwargs.get('slug'))
+        qs =  Product.objects.by_collection(collection.title)
+        return qs
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(ProductsInCollectionView, self).get_context_data(*args, **kwargs)
+        cart_obj, cart_created = Cart.objects.new_or_get(self.request)
+        context['cart'] = cart_obj
+        collection = Collection.objects.get(slug=self.kwargs.get('slug'))
+        context['title'] = collection.title
         return context
 
 

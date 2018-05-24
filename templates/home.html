@@ -33,15 +33,11 @@
          </div>
        </section>
 
+       {% for collection in collections %}
        <section class="section_decorated">
-        {% include 'card-slider.html' with objects=collections.bestseller title='BEST SELLERS' %}
+        {% include 'card-slider.html' with collection=collection %}
       </section>
-       <section class="section_decorated">
-         {% include 'card-slider.html' with objects=collections.non_fiction title='NON FICTION BOOKS AT BEST PRICES' %}
-       </section>
-       <section class="section_decorated">
-         {% include 'card-slider.html' with objects=collections.children title='MUST READS FOR CHILDREN' %}
-       </section>
+      {% endfor %}
       </div>
    </div>
 </div>

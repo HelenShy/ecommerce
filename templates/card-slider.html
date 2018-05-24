@@ -1,7 +1,7 @@
 <div class="collection-list text-left">
-  <h5>{{ title }}</h5>
+  <a href="{{ collection.get_absolute_url }}"><h5>{{ collection.full_title }}</h5></a> 
   <div class="card-slider text-center">
-    {% for obj in objects %}
+    {% for obj in collection.products.all %}
       <div class="slider-item active clickable" data-url="{{ obj.get_absolute_url }}">
           <img class="card-img-top img-fluid" src="{{ obj.image.url }}" alt="Card image cap">
           <div class="card-body">
@@ -11,9 +11,6 @@
           </div>
       </div>
       {% endfor %}
-
-
-
 
   </div>
 </div>

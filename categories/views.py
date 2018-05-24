@@ -1,7 +1,7 @@
-from django.views.generic import View
+from django.views.generic import View, ListView
 from django.http import JsonResponse
 
-from .models import Category
+from .models import Category, Collection
 from carts.models import Cart
 
 
@@ -13,3 +13,14 @@ class CategoriesAjaxView(View):
                               'title': c.title}
                               for c in categories]
         return JsonResponse(data)
+
+
+class CollectionListView(ListView):
+    queryset = Collection.objects.all()
+    template_name = 'categories/collections-list.html'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(CollectionListView, self).get_context_data(*args, **kwargs)
+        collections = Collection.objects.show_on_home_page().all()
+        context['collections'] = collections
+        return context

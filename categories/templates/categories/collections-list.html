@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section>
+  <h2>Collections</h2>
+    {% for collection in collections %}
+       <section class="section_decorated">
+        {% include 'card-slider.html' with collection=collection %}
+      </section>
+    {% endfor %}
+</section>
+{% endblock %}

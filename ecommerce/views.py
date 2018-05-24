@@ -6,13 +6,11 @@ from products.models import Product
 
 def home_page(request):
     context= {}
-    collections = {}
-    data = [{'ctx_name':'bestseller', 'title':'Bestseller'},
-            {'ctx_name':'children', 'title':'Children'},
-            {'ctx_name':'non_fiction', 'title':'Non fiction'},]
-    for coll_data in data:
-        collections[coll_data['ctx_name']] = Product.objects.by_collection(
-            coll_data['title'])
+    collections = Collection.objects.show_on_home_page().all()
+    for c in collections:
+        print(c)
+        for p in c.products.all():
+            print(p.title)
     genres = [cat for cat in Category.objects.all()]
     context['collections'] = collections
     context['genres'] = genres
