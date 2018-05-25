@@ -168,7 +168,7 @@ def upload_file_loc(instance, filename):
             _id = 0
     if not slug:
         slug = unique_slug_generator(instance.product)
-    location = 'product/{slug}/{id}'.format(slug=instance.product, id=_id)
+    location = 'product/{slug}/{id}/'.format(slug=slug, id=_id)
     return location + filename
 
 
@@ -203,17 +203,7 @@ class ProductFile(models.Model):
         region = getattr(settings, 'S3DIRECT_REGION')
         access_key = getattr(settings, 'AWS_ACCESS_KEY_ID')
         secret_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY')
-        if not bucket: #or region or access_key or secret_key:
-            print( "bucket")
-            return "/"
-        if not region:
-            print("region.")
-            return "/"
-        if not access_key:
-            print("access_key.")
-            return "/"
-        if not secret_key:
-            print("secret_key")
+        if not (bucket or region or access_key or secret_key):
             return "/"
         PROTECTED_DIR_NAME = getattr(settings, 
                                     'PROTECTED_DIR_NAME', 

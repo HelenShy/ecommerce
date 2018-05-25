@@ -104,6 +104,6 @@ class ProductDownloadView(View):
             else:
                 messages.error(self.request, "You do not have access to download this file.")
                 return redirect(download_obj.get_default_url())
-        
         aws_filepath = download_obj.generate_download_url()
+        print(aws_filepath)
         return HttpResponseRedirect(aws_filepath)
