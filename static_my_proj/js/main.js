@@ -167,12 +167,8 @@ document.addEventListener('DOMContentLoaded', function() {
   speed: 300,
   slidesToShow: 5,
   slidesToScroll: 2,
-  prevArrow:"<div class='slick-arrow-wrapper-left'>" +
-  "<img class='a-left control-c prev slick-prev' src='static/images/circle-left.png'>" +
-  "</div>",
-  nextArrow:"<div class='slick-arrow-wrapper-right'>" +
-  "<img class='a-right control-c next slick-next' src='static/images/circle-right.png'>"+
-  "</div>",
+  prevArrow:"<div class='slick-arrow-wrapper-left'><</div>",
+  nextArrow:"<div class='slick-arrow-wrapper-right'>></div>",
   responsive: [
     {
       breakpoint: 1024,

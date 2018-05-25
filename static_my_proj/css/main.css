@@ -140,7 +140,7 @@ section.section_decorated{
 }
 
 .slider-item img{
-  height:150px;
+  height:200px;
 }
 
 .slick-arrow-wrapper-right,
@@ -148,6 +148,13 @@ section.section_decorated{
 {
   position: absolute;
   top:45%;
+  background:#7FBDFF;
+  display: inline-block;
+  padding: 1px 7px;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  font-size: 20px;
 }
 
 .slick-arrow-wrapper-right{

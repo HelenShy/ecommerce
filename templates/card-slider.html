@@ -1,6 +1,8 @@
+{% load static %}
+
 <div class="collection-list text-left">
-  <a href="{{ collection.get_absolute_url }}"><h5>{{ collection.full_title }}</h5></a> 
-  <div class="card-slider text-center">
+  <a href="{{ collection.get_absolute_url }}"><h5>{{ collection.full_title }}</h5></a>
+  <div class="card-slider text-center col-10">
     {% for obj in collection.products.all %}
       <div class="slider-item active clickable" data-url="{{ obj.get_absolute_url }}">
           <img class="card-img-top img-fluid" src="{% if obj.image %}{{ obj.image.url }} {% endif %}" alt="Card image cap">
@@ -11,6 +13,5 @@
           </div>
       </div>
       {% endfor %}
-
   </div>
 </div>
