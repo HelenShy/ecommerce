@@ -204,16 +204,16 @@ class ProductFile(models.Model):
         access_key = getattr(settings, 'AWS_ACCESS_KEY_ID')
         secret_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY')
         if not bucket: #or region or access_key or secret_key:
-            messages.error(self.request, "bucket")
+            print( "bucket")
             return "/"
         if not region:
-            messages.error(self.request, "region.")
+            print("region.")
             return "/"
         if not access_key:
-            messages.error(self.request, "access_key.")
+            print("access_key.")
             return "/"
         if not secret_key:
-            messages.error(self.request, "secret_key")
+            print("secret_key")
             return "/"
         PROTECTED_DIR_NAME = getattr(settings, 
                                     'PROTECTED_DIR_NAME', 
