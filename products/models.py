@@ -162,7 +162,7 @@ def upload_file_loc(instance, filename):
         Klass = instance.__class__
         qs = Klass.objects.all().order_by('-pk')
         if qs.exists():
-            _id = qs.first() + 1
+            _id = qs.first().id + 1
         else:
             _id = 0
     if not slug:
