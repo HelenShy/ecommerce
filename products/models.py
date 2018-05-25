@@ -211,7 +211,7 @@ class ProductFile(models.Model):
         path = "{base}/{file_path}".format(base=PROTECTED_DIR_NAME,
                                             file_path=str(self.file))
         aws_dl_object = AWSDownload(access_key, secret_key, bucket, region)
-        file_url = aws_dl_object.generate_url(path, new_filename=self.display_name)
+        file_url = aws_dl_object.generate_url(path, new_filename=self.name)
         return file_url
 
     def get_download_url(self):
