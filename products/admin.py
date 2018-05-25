@@ -28,7 +28,7 @@ class AuthorInline(admin.TabularInline):
 
 class ProductAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'slug']
-    inlines = [ProductFileInline, CategoryInline, CollectionInline]
+    inlines = [ProductFileInline, CategoryInline, CollectionInline, AuthorInline]
     class Meta:
         model = Product
 

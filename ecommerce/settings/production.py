@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['all-world-books.herokuapp.com', '.herokuapp.com']
 
@@ -35,7 +35,7 @@ EMAIL_USE_TLS   = True
 EMAIL_USE_SSL = False
 DEFAULT_FROM_EMAIL  = 'AllWorldBooks <mls.housestage@gmail.com>'
 
-BASE_URL = "https://all-world-books.herokuapp.com/"
+BASE_URL = "https://all-world-books.herokuapp.com"
 
 DEFAULT_ACTIVATION_DAYS = 7
 
