@@ -3,7 +3,7 @@
   <div class="card-slider text-center">
     {% for obj in collection.products.all %}
       <div class="slider-item active clickable" data-url="{{ obj.get_absolute_url }}">
-          <img class="card-img-top img-fluid" src="{{ obj.image.url }}" alt="Card image cap">
+          <img class="card-img-top img-fluid" src="{% if obj.image.url %}{{ obj.image.url }} {% endif %}" alt="Card image cap">
           <div class="card-body">
             <p class="card-title" class="text-muted"><small>{{ obj.title }}</small><br>
               <small><em>{{ obj.authors }}</em></small></p>
