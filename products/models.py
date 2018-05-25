@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.db.models import Q
 from django.conf import settings
 from django.core.files.storage import FileSystemStorage
+from django.contrib import messages
 
 from ecommerce.utils import unique_slug_generator, get_filename
 from ecommerce.aws.utils import ProtectedS3BototStorage
@@ -202,7 +203,17 @@ class ProductFile(models.Model):
         region = getattr(settings, 'S3DIRECT_REGION')
         access_key = getattr(settings, 'AWS_ACCESS_KEY_ID')
         secret_key = getattr(settings, 'AWS_SECRET_ACCESS_KEY')
-        if not bucket or region or access_key or secret_key:
+        if not bucket: #or region or access_key or secret_key:
+            messages.error(self.request, "bucket")
+            return "/"
+        if not region:
+            messages.error(self.request, "region.")
+            return "/"
+        if not access_key:
+            messages.error(self.request, "access_key.")
+            return "/"
+        if not secret_key:
+            messages.error(self.request, "secret_key")
             return "/"
         PROTECTED_DIR_NAME = getattr(settings, 
                                     'PROTECTED_DIR_NAME', 
